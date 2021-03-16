@@ -2,10 +2,11 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
+
 #Fish Microservice
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/fishrfriends'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/fishrfriends'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -27,7 +28,11 @@ class Fish(db.Model):
         self.description = description
 
     def json(self):
-        return {"fish_id": self.fish_id, "fishname": self.fishname, "stock_qty": self.stock_qty, "description": self.description}
+        return {
+            "fish_id": self.fish_id, 
+            "fishname": self.fishname, 
+            "stock_qty": self.stock_qty, 
+            "description": self.description}
 
 
 @app.route("/fish")
