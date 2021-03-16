@@ -2,6 +2,7 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 
+
 #Fish Microservice
 
 app = Flask(__name__)
@@ -27,7 +28,11 @@ class Fish(db.Model):
         self.description = description
 
     def json(self):
-        return {"fish_id": self.fish_id, "fishname": self.fishname, "stock_qty": self.stock_qty, "description": self.description}
+        return {
+            "fish_id": self.fish_id, 
+            "fishname": self.fishname, 
+            "stock_qty": self.stock_qty, 
+            "description": self.description}
 
 
 @app.route("/fish")
