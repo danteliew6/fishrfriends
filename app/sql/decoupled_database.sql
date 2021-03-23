@@ -32,9 +32,9 @@ USE PAYMENT;
 
 DROP TABLE IF EXISTS payment;
 CREATE TABLE payment (
-  payment_id int(11) NOT NULL AUTO_INCREMENT,
+  payment_id int NOT NULL AUTO_INCREMENT,
   username varchar(30) NOT NULL,
-  amount int(6) NOT NULL,
+  amount int NOT NULL,
   datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT payment_pk PRIMARY KEY (payment_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 
@@ -52,10 +52,10 @@ USE FISH;
 
 DROP TABLE IF EXISTS fish;
 CREATE TABLE fish (
-  fish_id int(11) NOT NULL AUTO_INCREMENT,
+  fish_id int NOT NULL AUTO_INCREMENT,
   fishname varchar(30) NOT NULL,
   price float NOT NULL,
-  stock_qty int(6) NOT NULL,
+  stock_qty int NOT NULL,
   description varchar(100) NOT NULL,
   CONSTRAINT fish_pk PRIMARY KEY (fish_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 
@@ -74,12 +74,19 @@ USE FISH_ORDER;
 DROP TABLE IF EXISTS fish_order;
 
 CREATE TABLE fish_order (
-  fish_order_id int(11) NOT NULL AUTO_INCREMENT,
-  fish_id int(11) NOT NULL,
-  payment_id int(11) NOT NULL,
-  quantity int(6) NOT NULL,
+  fish_order_id int NOT NULL AUTO_INCREMENT,
+  payment_id int NOT NULL,
   CONSTRAINT fish_order_pk PRIMARY KEY (fish_order_id)
   ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 
+
+DROP TABLE IF EXISTS fish_order_item;
+
+CREATE TABLE fish_order_item (
+  fish_id int NOT NULL,
+  fish_order_id int NOT NULL,
+  quantity int NOT NULL,
+  CONSTRAINT fish_order_item_pk PRIMARY KEY(fish_id, fish_order_id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 
 
@@ -94,7 +101,7 @@ USE PROMOTION;
 DROP TABLE IF EXISTS promotion;
 CREATE TABLE promotion (
   promotion_code VARCHAR(30) NOT NULL,
-  discount int(2) NOT NULL,
+  discount int NOT NULL,
   CONSTRAINT promotion_pk PRIMARY KEY (promotion_code)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8; 
 
