@@ -48,7 +48,7 @@ def get_all():
             {
                 "code": 200,
                 "data": {
-                    "fishes": [payment.json() for payment in payment_list]
+                    "payments": [payment.json() for payment in payment_list]
                 }
             }
         )
@@ -60,7 +60,7 @@ def get_all():
     ), 404
 
 
-@app.route("/payment/<string:username>")
+@app.route("/payment/user/<string:username>")
 def find_payments_by_username(username):
     payment_list = Payment.query.filter_by(username = username)
     if payment_list:

@@ -35,7 +35,7 @@ CREATE TABLE payment (
   payment_id int NOT NULL AUTO_INCREMENT,
   username varchar(30) NOT NULL,
   amount int NOT NULL,
-  order_id int NOT NULL,
+  fish_order_id int NOT NULL,
   datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT payment_pk PRIMARY KEY (payment_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 
