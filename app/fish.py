@@ -6,7 +6,7 @@ from flask_cors import CORS
 #Fish Microservice
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/fishrfriends'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/FISH'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -18,21 +18,25 @@ class Fish(db.Model):
 
     fish_id = db.Column(db.Integer, primary_key=True)
     fishname = db.Column(db.String(64), nullable=False)
+    price = db.Column(db.Float, nullable=False)
     stock_qty = db.Column(db.Integer)
     description = db.Column(db.String(64), nullable=False)
 
-    def __init__(self, fish_id, fishname, stock_qty, description):
+    def __init__(self, fish_id, fishname, price, stock_qty, description):
         self.fish_id = fish_id
         self.fishname = fishname
+        self.price = price
         self.stock_qty = stock_qty
         self.description = description
 
     def json(self):
         return {
             "fish_id": self.fish_id, 
-            "fishname": self.fishname, 
+            "fishname": self.fishname,
+            "price": self.price, 
             "stock_qty": self.stock_qty, 
-            "description": self.description}
+            "description": self.description
+        }
 
 
 @app.route("/fish")
@@ -118,6 +122,8 @@ def update_fish(fish_id):
         data = request.get_json()
         if data['fishname']:
             fish.fishname = data['fishname']
+        if data['price']:
+            fish.price = data['price']
         if data['stock_qty']:
             fish.stock_qty = data['stock_qty']
         if data['description']:

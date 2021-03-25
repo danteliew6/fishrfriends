@@ -11,7 +11,7 @@ from datetime import datetime
 
 app = Flask(__name__)
 #Change to your own database
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/fishrfriends'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/FISH_ORDER'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
@@ -22,23 +22,46 @@ class fish_order(db.Model):
     __tablename__ = 'fish_order'
 
     fish_order_id = db.Column(db.Integer, primary_key=True)
-    fish_id = db.Column(db.Integer, nullable=False)
     payment_id = db.Column(db.Integer, nullable=False)
+
+    def __init__(self, fish_order_id, payment_id):
+        self.fish_order_id = fish_id
+        self.payment_id =  payment_id
+
+    def json(self):
+
+        dto = {
+            'fish_order_id': self.fish_order_id,
+            'payment_id': self.payment_id,
+        }
+
+        # dto['order_item'] = []
+        # for oi in self.order_item:
+        #     dto['order_item'].append(oi.json())
+
+        return dto
+
+class fish_order_item(db.Model):
+    __tablename__ = 'fish_order_item'
+
+    fish_order_id = db.Column(db.Integer, primary_key=True)
+    fish_id = db.Column(db.Integer, primary_key=True)
     quantity = db.Column(db.Integer, nullable=False)
+    price = db.Column(db.Integer, nullable=False)
 
     def __init__(self, fish_order_id, fish_id, payment_id, quantity):
         self.fish_order_id = fish_id
         self.fish_id = fish_id
-        self.payment_id =  payment_id
-        self.quantity =  quantity
+        self.quantity = quantity
+        self.price = price
 
     def json(self):
 
         dto = {
             'fish_order_id': self.fish_order_id,
             'fish_id': self.fish_id,
-            'payment_id': self.payment_id,
-            'quantity': self.quantity
+            'quantity': self.quantity,
+            'price': self.price,
         }
 
         # dto['order_item'] = []
