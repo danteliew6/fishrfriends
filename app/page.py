@@ -10,6 +10,11 @@ def home():
 def index():
     return render_template('new.html')
 
+@app.route("/pay")
+def payment():
+    return render_template('checkout.html')
+
+    
 if __name__ == '__main__':
     app.run(port=5888, debug=True)
 
