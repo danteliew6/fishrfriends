@@ -26,6 +26,8 @@
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script 
     src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     
     <script
     src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"
@@ -41,11 +43,12 @@
     <div id="main-container" class="container">
         <h1 class="display-4">Fish Listing</h1>
         <table id="fishTable" class='table table-striped' border='1'>
-            <thead class='thead-dark'>
+            <thead class='thead-bright'>
                 <tr>
                     <th>Fish</th>
                     <th>Description</th>
                     <th>Available Quantity</th>
+                    <th>Selected Quantity</th>
                 </tr>
             </thead>
         </table>
@@ -86,7 +89,7 @@
                        eachRow ="<td>" + fish.fishname + "</td>" +
                                 "<td>" + fish.description + "</td>" +
                                 "<td>" + fish.stock_qty + "</td>" + 
-                                "<td>" + +"<td>";
+                                "<td>" + `<input type = "number" id = "selectedQty"></input>` + " " + `<button type="button" class="btn btn-info">Add to cart</button>`+ "</td>";
                        rows += "<tbody><tr>" + eachRow + "</tr></tbody>";
                     }
                     // add all the rows to the table
