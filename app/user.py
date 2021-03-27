@@ -49,10 +49,10 @@ def find_by_username(username):
         )
     return jsonify(
         {
-            "code": 404,
-            "message": "Promotion not found."
+            "code": 500,
+            "message": "Invalid username"
         }
-    ), 404
+    ), 500
 
 
 @app.route("/user", methods=['POST'])
@@ -68,9 +68,6 @@ def add_user():
         return jsonify(
             {
                 "code": 500,
-                "data": {
-                    "user": user
-                },
                 "message": "An error occurred when adding the user."
             }
         ), 500
