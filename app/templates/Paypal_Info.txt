@@ -1,0 +1,7 @@
+Buyer: 
+Email: sb-c1heo5545172@personal.example.com
+Password: VgQl!$4"
+
+Seller/ Owner:
+Email: sb-fee4w5537788@business.example.com
+Password: Z]zH7!fp

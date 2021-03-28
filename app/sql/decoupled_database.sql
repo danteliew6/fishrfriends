@@ -35,6 +35,7 @@ CREATE TABLE payment (
   payment_id int NOT NULL AUTO_INCREMENT,
   username varchar(30) NOT NULL,
   amount int NOT NULL,
+  fish_order_id int NOT NULL,
   datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
   CONSTRAINT payment_pk PRIMARY KEY (payment_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 
@@ -76,6 +77,7 @@ DROP TABLE IF EXISTS fish_order;
 CREATE TABLE fish_order (
   fish_order_id int NOT NULL AUTO_INCREMENT,
   payment_id int NOT NULL,
+  amount FLOAT NOT NULL,
   CONSTRAINT fish_order_pk PRIMARY KEY (fish_order_id)
   ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 
 
@@ -85,7 +87,9 @@ CREATE TABLE fish_order_item (
   fish_id int NOT NULL,
   fish_order_id int NOT NULL,
   quantity int NOT NULL,
-  CONSTRAINT fish_order_item_pk PRIMARY KEY(fish_id, fish_order_id)
+  price float NOT NULL,
+  CONSTRAINT fish_order_item_pk PRIMARY KEY(fish_id, fish_order_id),
+  CONSTRAINT fish_order_item_fk1 FOREIGN KEY (fish_order_id) REFERENCES fish_order(fish_order_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 

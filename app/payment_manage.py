@@ -11,10 +11,6 @@ from invokes import invoke_http
 #Payment Management Microservice
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:3306/fishrfriends'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-
-db = SQLAlchemy(app)
 
 CORS(app)  
 
@@ -75,7 +71,7 @@ def process_payment(order_info):
 
     #Update fish quantity
     fish_json = {
-        'stock_qty' : order_info['quantity'],
+        'quantity' : order_info['quantity'],
         'fish_id' : order_info['fish_id'] 
     }
     fish_result = invoke_http(fish_URL, method = 'PUT', json = fish_json)
