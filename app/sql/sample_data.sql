@@ -9,10 +9,10 @@ insert into payment(username, amount, fish_order_id) VALUES ('tan',10,1);
 
 USE FISH;
 
-insert into fish(fishname, stock_qty, description) VALUES ('salmon', 100, 'everyone's fav fish!');
-insert into fish(fishname, stock_qty, description) VALUES ('dory', 100, 'finding dory!');
-insert into fish(fishname, stock_qty, description) VALUES ('nemo', 100, 'clown!!');
-insert into fish(fishname, stock_qty, description) VALUES ('shark', 100, 'fish not food!');
+insert into fish(fishname, price, stock_qty,  description) VALUES ('salmon', 5, 100, 'everyones fav fish!');
+insert into fish(fishname, price, stock_qty, description) VALUES ('dory', 6, 100, 'finding dory!');
+insert into fish(fishname, price, stock_qty, description) VALUES ('nemo', 1, 100, 'clown!!');
+insert into fish(fishname, price, stock_qty, description) VALUES ('shark', 10, 100, 'fish not food!');
 
 USE PROMOTION;
 insert into promotion(promotion_code, discount) VALUES ('fishrfriends', 10);
@@ -22,8 +22,14 @@ insert into promotion(promotion_code, discount) VALUES ('ilovefish', 15);
 
 
 USE FISH_ORDER;
-insert into fish_order(payment_id, quantity, amount) VALUES (1, 20, 50);
-insert into fish_order(payment_id, quantity, amount) VALUES (4, 10, 40);
-insert into fish_order(payment_id, quantity, amount) VALUES (2, 10, 30);
+insert into fish_order(payment_id, amount) VALUES (1, 50);
+insert into fish_order(payment_id, amount) VALUES (4, 40);
+insert into fish_order(payment_id, amount) VALUES (2, 30);
 
-insert into fish_order_item() VALUES ();
+insert into fish_order_item VALUES (5, 1, 5, 5);
+insert into fish_order_item VALUES (4, 2, 6, 5); 
+insert into fish_order_item VALUES (1, 2, 10, 1);
+insert into fish_order_item VALUES (2, 3, 10, 3);
+insert into fish_order_item VALUES (1, 1, 25, 1);
+
+
