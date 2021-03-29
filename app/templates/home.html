@@ -1,10 +1,12 @@
-{% extends 'MasterBase.html' %}
+{% extends "base.html" %}
+{% block title %} Home {% endblock %}
+{%block content%} 
+<h1> This is our homepage  Welcome to FISH R FRIENDS</h1>
 
-{% block content %}
-    <h1>{% block title %} Welcome to FISH'R'FRIENDS {% endblock %}</h1>
-    <a id="addBookBtn" class="btn btn-primary" 
-     href="/">GO Back Home!</a>
-     <script>
-         
-     </script>
+{% if condition == False %}
+Yes it is True!
+{% else %}
+No it is not True
+{% endif %}
+
 {% endblock %}

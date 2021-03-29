@@ -1,23 +1,14 @@
-from flask import Flask ,render_template
+#Where users can navigate to
+#this file will have the URLS inside of it
+from flask import Blueprint, render_template
 
-app =Flask(__name__)
+page = Blueprint('page', __name__)
 
-@app.route("/")
+
+#we can pass conditionals through to our pages and all
+@page.route('/')
 def home():
-    return render_template('home.html')
-
-@app.route("/test")
-def index():
-    return render_template('new.html')
-
-@app.route("/pay")
-def payment():
-    return render_template('checkout.html')
-
-    
-if __name__ == '__main__':
-    app.run(port=5888, debug=True)
-
+    return render_template("home.html", condition = True)
 
 
 
