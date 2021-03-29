@@ -10,6 +10,9 @@ page = Blueprint('page', __name__)
 def home():
     return render_template("home.html", condition = True)
 
-
+@page.route('/checkout')
+def paypal():
+    return render_template('checkout.html', username="weimin", password="1234")
+  
 
 
