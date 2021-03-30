@@ -27,27 +27,25 @@ class FishOrder(db.Model):
     __tablename__ = 'fish_order'
 
     fish_order_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    payment_id = db.Column(db.Integer, nullable=False)
+    # payment_id = db.Column(db.Integer, nullable=False)
     amount = db.Column(db.Float, nullable=False)
-    # username = db.Column(db.String(100), nullable=False)
+    username = db.Column(db.String(100), nullable=False)
 
-    def __init__(self, payment_id, amount):
-        self.payment_id =  payment_id
+    def __init__(self, amount, username):
+        # self.payment_id =  payment_id
         self.amount = amount
-        # self.username = username
+        self.username = username
 
     def json(self):
 
         dto = {
             'fish_order_id': self.fish_order_id,
-            'payment_id': self.payment_id,
+            # 'payment_id': self.payment_id,
             'amount' : self.amount,
-            # 'username' : self.username
+            'username' : self.username
         }
 
-        # dto['order_item'] = []
-        # for oi in self.order_item:
-        #     dto['order_item'].append(oi.json())
+
 
         return dto
 
@@ -75,33 +73,10 @@ class FishOrderItem(db.Model):
             'price': self.price,
         }
 
-        # dto['order_item'] = []
-        # for oi in self.order_item:
-        #     dto['order_item'].append(oi.json())
 
         return dto
 
-#We have no order item yet, following DB below is orderitem DB
 
-# class Order_Item(db.Model):
-#     __tablename__ = 'order_item'
-
-#     item_id = db.Column(db.Integer, primary_key=True)
-    # fish_order_id = db.Column(db.ForeignKey(
-    #     'order.fish_order_id', ondelete='CASCADE', onupdate='CASCADE'), nullable=False, index=True)
-
-#     fish_id = db.Column(db.Integer, nullable=False)
-#     quantity = db.Column(db.Integer, nullable=False)
-
-#     # fish_order_id = db.Column(db.String(36), db.ForeignKey('order.order_id'), nullable=False)
-#     # order = db.relationship('Order', backref='order_item')
-#     order = db.relationship(
-#         'Order', primaryjoin='Order_Item.order_id == Order.order_id', backref='order_item')
-
-#     def json(self):
-#         return {'item_id': self.item_id, 'fish_id': self.fish_id, 'quantity': self.quantity, 'fish_order_id': self.fish_order_id}
-
-#working
 @app.route("/order")
 def get_all():
     orderlist = FishOrder.query.all()
@@ -171,7 +146,7 @@ def create_order():
     data =request.get_json()
 
 
-    order = FishOrder(payment_id=data['payment_id'], amount=data['amount'])
+    order = FishOrder(amount=data['amount'], username=data['username'])
     db.session.add(order)
     try:
         db.session.commit()

@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
+from sqlalchemy.sql import func
 
 #Fish Microservice
 
@@ -14,26 +15,19 @@ CORS(app)
 
 class Payment(db.Model):
     __tablename__ = 'payment'
-    # payment_id int NOT NULL AUTO_INCREMENT,
-    # username varchar(30) NOT NULL,
-    # amount int NOT NULL,
-    # datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    payment_id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(30), nullable = False)
-    amount = db.Column(db.Integer, nullable = False)
-    fish_order_id = db.Column(db.Integer, nullable = False)
-    datetime = db.Column(db.DateTime, nullable = True)
 
-    def __init__(self, payment_id, username, amount, fish_order_id, datetime):
-        self.payment_id = payment_id
+    username = db.Column(db.String(30), nullable = False, primary_key = True)
+    amount = db.Column(db.Integer, nullable = False)
+    fish_order_id = db.Column(db.Integer, nullable = False, primary_key = True)
+    datetime = db.Column(db.DateTime, nullable = True, default=func.now())
+
+    def __init__(self, username, amount, fish_order_id):
         self.username = username
         self.amount = amount
         self.fish_order_id = fish_order_id
-        self.datetime = datetime
 
     def json(self):
         return {
-            "payment_id": self.payment_id,
             "username": self.username,
             "amount" : self.amount,
             "fish_order_id" : self.fish_order_id,
@@ -79,12 +73,12 @@ def find_payments_by_username(username):
 
 @app.route("/payment/<string:fish_order_id>")
 def find_payments_by_order_id(fish_order_id):
-    payment_list = Payment.query.filter_by(fish_order_id = fish_order_id)
-    if payment_list:
+    payment = Payment.query.filter_by(fish_order_id = fish_order_id).first()
+    if payment:
         return jsonify(
             {
                 "code": 200,
-                "data": [payment.json() for payment in payment_list]
+                "data": payment.json()
             }
         )
     return jsonify(
@@ -96,7 +90,7 @@ def find_payments_by_order_id(fish_order_id):
 
 
 
-@app.route("/promotion", methods=['POST'])
+@app.route("/payment", methods=['POST'])
 def add_payment():
     data = request.get_json()
     payment = Payment(**data)
@@ -108,9 +102,6 @@ def add_payment():
         return jsonify(
             {
                 "code": 500,
-                "data": {
-                    "payment": payment
-                },
                 "message": "An error occurred creating the promotion."
             }
         ), 500
