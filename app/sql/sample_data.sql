@@ -22,9 +22,9 @@ insert into promotion(promotion_code, discount) VALUES ('ilovefish', 15);
 
 
 USE FISH_ORDER;
-insert into fish_order(payment_id, amount) VALUES (1, 50);
-insert into fish_order(payment_id, amount) VALUES (4, 40);
-insert into fish_order(payment_id, amount) VALUES (2, 30);
+insert into fish_order(amount, username) VALUES (50, 'dante');
+insert into fish_order(amount, username) VALUES (40, 'danteliew6');
+insert into fish_order(amount, username) VALUES (30, 'fishy');
 
 insert into fish_order_item VALUES (5, 1, 5, 5);
 insert into fish_order_item VALUES (4, 2, 6, 5); 
