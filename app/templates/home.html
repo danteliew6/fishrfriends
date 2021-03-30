@@ -2,7 +2,24 @@
 {% block title %} Home {% endblock %}
 {%block content%} 
 <h1> This is our homepage  Welcome to FISH R FRIENDS</h1>
-{{condition}}
+
+
+<div class="card-deck">
+    {%for fish in fishes%}
+    {% set name = 'images/' + fish['fishname'] + '.png' %}
+    
+    <div class="card">
+      <img class="card-img-top" src={{ url_for('static', filename = name) }} alt="Card image cap">
+      <div class="card-body">
+        <h5 class="card-title">{{fish[fishname]}}</h5>
+        <p class="card-text">{{fish['description']}}</p>
+        <a href="#" class="btn btn-primary">Buy Now</a>
+      </div>
+    </div>
+    {% endfor%}
+</div>
+
+
 {% if condition == False %}
 Yes it is True!
 {% else %}
