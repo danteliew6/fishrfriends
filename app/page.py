@@ -11,7 +11,8 @@ page = Blueprint('page', __name__)
 @page.route('/')
 def home():
     fish = requests.request('GET', 'http://127.0.0.1:5000/fish', json = None)
-    return render_template("home.html", condition = fish.json())
+    data = fish.json()
+    return render_template("home.html", fishes = data['data']['fishes'] )
 
 @page.route('/checkout')
 def paypal():
