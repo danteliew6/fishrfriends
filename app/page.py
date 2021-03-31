@@ -27,6 +27,6 @@ def home():
 @page.route('/checkout')
 def paypal():
     return render_template('checkout.html', FinalValue='123', password="1234")
-  
+
 
 
