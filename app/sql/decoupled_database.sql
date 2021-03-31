@@ -55,7 +55,7 @@ CREATE TABLE fish (
   fish_id int NOT NULL AUTO_INCREMENT,
   fishname varchar(30) NOT NULL,
   price float NOT NULL,
-  stock_qty int NOT NULL,
+  stock_qty int NOT NULL CHECK (stock_qty >= 0),
   description varchar(100) NOT NULL,
   CONSTRAINT fish_pk PRIMARY KEY (fish_id)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 

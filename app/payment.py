@@ -45,7 +45,7 @@ def get_all():
                     "payments": [payment.json() for payment in payment_list]
                 }
             }
-        )
+        ), 200
     return jsonify(
         {
             "code": 404,
@@ -63,7 +63,7 @@ def find_payments_by_username(username):
                 "code": 200,
                 "data": [payment.json() for payment in payment_list]
             }
-        )
+        ), 200
     return jsonify(
         {
             "code": 404,
@@ -80,7 +80,7 @@ def find_payments_by_order_id(fish_order_id):
                 "code": 200,
                 "data": payment.json()
             }
-        )
+        ), 200
     return jsonify(
         {
             "code": 404,
@@ -102,7 +102,7 @@ def add_payment():
         return jsonify(
             {
                 "code": 500,
-                "message": "An error occurred creating the promotion."
+                "message": "An error occurred when adding the payment."
             }
         ), 500
 

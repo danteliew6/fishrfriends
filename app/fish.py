@@ -124,35 +124,39 @@ def find_by_fish_id(fish_id):
 def update_fish():
     data = request.get_json()
 
-    try:
-        fish = Fish.query.filter_by(fish_id=data['fish_id']).first()        
-    except Exception as e:
-        return jsonify(
-        {
-            "code": 404,
-            "data": {
-                "fish_id": data['fish_id']
-            },
-            "message": "Fish not found."
-        }
-        ), 404
+    for fish_item in data:
 
-    if data['quantity']:
-        fish.stock_qty -= int(data['quantity'])
-        db.session.commit()
-        return jsonify(
-        {
-            "code": 200,
-            "data": fish.json()
-        }
-        )
-    else:
-        return jsonify(
-        {
-            "code": 500,
-            "message": "quantity to deduct not specified."
-        }
-        ), 500
+        try:
+            fish = Fish.query.filter_by(fish_id=fish_item['fish_id']).first()        
+        except Exception as e:
+            return jsonify(
+            {
+                "code": 404,
+                "data": {
+                    "fish_id": fish_item['fish_id']
+                },
+                "message": "Fish not found."
+            }
+            ), 404
+
+        if fish_item['quantity']:
+            fish.stock_qty -= int(fish_item['quantity'])
+        else:
+            return jsonify(
+            {
+                "code": 500,
+                "fish_id" : fish_item['fish_id'],
+                "message": "quantity to deduct not specified."
+            }
+            ), 500
+
+    db.session.commit()
+    return jsonify(
+    {
+        "code": 200,
+        "data": data
+    }
+    ), 200
 
 
 
