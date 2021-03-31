@@ -2,22 +2,74 @@
 {% block title %} Home {% endblock %}
 {%block content%} 
 <h1> This is our homepage  Welcome to FISH R FRIENDS</h1>
+{{fishes}}
+{{data}}
 
-
+{% if datacode == 200 %}
 <div class="card-deck">
     {%for fish in fishes%}
     {% set name = 'images/' + fish['fishname'] + '.png' %}
+    {% set countid = fish['fish_id'] %}
     
     <div class="card">
       <img class="card-img-top" src={{ url_for('static', filename = name) }} alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">{{fish[fishname]}}</h5>
-        <p class="card-text">{{fish['description']}}</p>
-        <a href="#" class="btn btn-primary">Buy Now</a>
+        <p class="card-text">{{fish['description']}} {{fish['stock_qty']}}</p>
+        <a href="#" class="btn btn-primary">{{id}}</a>
+        <button onclick="myfunction('{{countid}}','{{fish.stock_qty}}')" >Click</button>
+        <p class="price">{{fish.price}}</p>
+        <p class = "quantity" id= {{countid}} >0</p>
       </div>
     </div>
+
     {% endfor%}
+
+    
+
+
 </div>
+{%endif%}
+
+    {% set price_array =[] %}
+
+    {% for fish in fishes %}
+        {{price_array.append(fish.price)}}
+    {% endfor %}
+
+    {{price_array}}
+
+<button onclick="calculate()" >calculate</button>
+<p id = "result"></p>
+
+
+
+<script>
+
+    function calculate(){
+        console.log();
+        let priceList = document.getElementsByClassName("price");
+        let countList = document.getElementsByClassName("quantity");
+
+        var total = 0;
+        for( i =0; i < priceList.length ; i++){
+                total += parseInt(countList[i].innerHTML) * parseFloat(priceList[i].innerHTML);
+        }
+        document.getElementById('result').innerHTML = total;
+    }
+    //var button = document.getElementById('1'), count = 0 ;
+    function myfunction(x,y){
+        count = document.getElementById(x).innerHTML;
+        count = parseInt(count)
+        if(count+1 <= parseInt(y)){
+            console.log(count)
+            count += 1;
+        }
+        document.getElementById(x).innerHTML=count;
+    };
+
+</script>
+
 
 
 {% if condition == False %}
