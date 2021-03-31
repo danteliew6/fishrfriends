@@ -7,8 +7,13 @@ import requests
 page = Blueprint('page', __name__)
 
 
-#we can pass conditionals through to our pages and all
 @page.route('/')
+def index():
+    return render_template('google-sign-in.html')
+
+
+#we can pass conditionals through to our pages and all
+@page.route('/home')
 def home():
     try:
         fish = requests.request('GET', 'http://127.0.0.1:5000/fish', json = None)
