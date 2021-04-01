@@ -11,9 +11,9 @@ app = Flask(__name__)
 # app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #Windows
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/fish'
+# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/fish'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL') or 'mysql+mysqlconnector://root@localhost:3306/fish'
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'pool_recycle': 299}
 
 db = SQLAlchemy(app)
@@ -128,16 +128,13 @@ def update_fish():
     data = request.get_json()
 
     for fish_item in data:
-
+ 
         try:
             fish = Fish.query.filter_by(fish_id=fish_item['fish_id']).first()        
         except Exception as e:
             return jsonify(
             {
                 "code": 404,
-                "data": {
-                    "fish_id": fish_item['fish_id']
-                },
                 "message": "Fish not found."
             }
             ), 404
@@ -192,4 +189,4 @@ def update_fish():
 
 
 if __name__ == '__main__':
-    app.run(port=5000, debug=True)
+    app.run(host='0.0.0.0', port=5000, debug=True)
