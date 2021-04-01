@@ -7,6 +7,9 @@ from os import environ
 
 import requests
 from invokes import invoke_http
+import amqp_setup
+import pika
+import json
 
 #Payment Management Microservice
 
@@ -32,7 +35,11 @@ def manage_payment():
             # do the actual work
             # 1. Send order info {cart items}
             result = process_payment(order_info)
-            # print(result)
+
+            if result['code'] in range (200, 300):
+                    amqp_setup.check_setup()
+                    message = json.dumps(order_info)
+                    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="confirmed.orders", body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
 
             return jsonify(result), result['code']
 
@@ -73,7 +80,7 @@ def process_payment(order_info):
     #Update fish quantity
     fish_result = invoke_http(fish_URL, method = 'PUT', json = order_info['order_items'])
     code = fish_result['code']
-
+    print(fish_result)
     #Error in updating fish qty
     if code not in range(200, 300):
         return {
@@ -101,7 +108,6 @@ def process_payment(order_info):
 
     fish_order_result = invoke_http(fish_order_URL, method = 'POST', json = order_info)
 
-    # print(fish_order_result)
 
     if fish_order_result['code'] not in range(200, 300):
         return {
@@ -128,7 +134,6 @@ def process_payment(order_info):
             "message": "Unsuccessful payment!"
         }      
     # END OF STRIPE API IMPLEMENTATION
-
 
     return {
         'code' : 201,

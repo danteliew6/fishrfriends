@@ -143,7 +143,7 @@ def update_fish():
             ), 404
 
         if fish_item['quantity']:
-            fish.stock_qty -= int(fish_item['quantity'])
+            fish.stock_qty = fish.stock_qty - int(fish_item['quantity'])
         else:
             return jsonify(
             {

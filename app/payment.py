@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from sqlalchemy.sql import func
 
-#Fish Microservice
+
+#Payment Microservice
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/payment'
@@ -119,3 +120,4 @@ def add_payment():
 
 if __name__ == '__main__':
     app.run(port=5003, debug=True)
+    
