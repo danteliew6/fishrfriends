@@ -16,7 +16,7 @@ def create_app():
     from .page import page
     from .auth import auth
 
-
+    app.jinja_env.add_extension('jinja2.ext.do')
     app.register_blueprint(page, url_prefix='/')
     app.register_blueprint(auth, url_prefix='/')
 

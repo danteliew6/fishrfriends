@@ -39,7 +39,28 @@ def sign_up():
 @auth.route('/manage',methods=['GET'])
 def management():
     orders = requests.request('GET', 'http://127.0.0.1:5002/order', json = None)
-    return render_template("manage.html",orders = orders)
+    order_status = orders.status_code
+    if(order_status == 200):
+        data = orders.json()
+    else:
+        data= None
+
+    fishes = requests.request('GET', 'http://127.0.0.1:5000/fish', json = None)
+    fishes_status = fishes.status_code
+    if(fishes_status == 200):
+        fish_data = fishes.json()
+    else:
+        fish_data =None
+
+    promotions = requests.request('GET', 'http://127.0.0.1:5004/promotion', json = None)
+    promotions_status = promotions.status_code
+    if(promotions_status == 200):
+        p_data = promotions.json()
+    else:
+        p_data =None
+
+
+    return render_template("manage.html",orders_data = data, code = order_status , fish_data =fish_data, fish_code = fishes_status, p_data = p_data)
 
 @auth.route('/promomod', methods=['GET','POST'])
 def promo_mod():
