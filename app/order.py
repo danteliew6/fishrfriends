@@ -9,6 +9,8 @@ from flask_cors import CORS
 
 from datetime import datetime
 
+from os import environ
+
 app = Flask(__name__)
 #Change to your own database
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root:root@localhost:8889/FISH_ORDER'
