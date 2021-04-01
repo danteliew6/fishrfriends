@@ -42,6 +42,7 @@
     {% set countid = fish['fish_id'] %}
     
     <div class="card cardshadow border-light">
+        <p hidden class="fishid">{{fish['fish_id']}}</p>
       <img class="card-img-top" src={{ url_for('static', filename = name) }} alt="Card image cap">
       <div class="card-body">
         <h5 class="card-title">{{fish['fishname']}}</h5>
@@ -73,12 +74,15 @@
 
 <!--{{price_array}}-->
 
-<div style="margin-bottom: 50px; margin-top: 50px; padding-bottom: 50px">
+<div style="margin-bottom: 40px; margin-top: 30px">
     <p style="text-align: right; font-size: 30px;">
         Total Price: $<span id = "result" >0</span>
     </p>
     </br>
-    <button class="btn btn-primary btn-lg" style="float: right;" onclick="calculate()" >Calculate Total Price</button>
+    <button class="btn btn-dark btn-lg" style="float: right;" onclick="calculate()" >Calculate Total Price</button>
+</div>
+<div style="margin-bottom: 50px; margin-top: 50px; padding-top: 50px; padding-bottom:50px">
+        <button class="btn btn-primary btn-lg" style="float: right;" onclick="checkout()" >Checkout</button>
 </div>
 
 
@@ -104,8 +108,8 @@
     function calculate(){
 
         let priceList = document.getElementsByClassName("price");
-        console.log(priceList);
         let countList = document.getElementsByClassName("quantity");
+        let fishList = document.getElementsByClassName("fishid");
 
         var total = 0;
         for( i = 0; i < priceList.length ; i++){
@@ -113,6 +117,34 @@
         }
         document.getElementById('result').innerHTML = total;
     }
+
+    function checkout(){
+        let priceList = document.getElementsByClassName("price");
+        let fishList = document.getElementsByClassName("fishid");
+        let countList = document.getElementsByClassName("quantity");
+        var obj = new Object();
+        var string;
+        var total = 0;
+        for( i = 0; i < priceList.length ; i++){
+            obj.fish_id = parseInt(fishList[i].innerHTML);
+            obj.quantity = parseInt(countList[i].innerHTML);
+            obj.price = parseInt(priceList[i].innerHTML);
+            if (i==0) {
+                string = JSON.stringify(obj);
+            } else {
+            string += JSON.stringify(obj);
+            total += parseInt(countList[i].innerHTML) * parseFloat(priceList[i].innerHTML);
+            }
+        }
+        let price = total;
+
+        string = "{"+"\"price\": "+price+""+", \"orders\" : [" + string + "]}";
+        
+        //JSON string to send to checkout
+        console.log(string);
+        
+
+        }
     //var button = document.getElementById('1'), count = 0 ;
     function addItem(x,y){
         count = document.getElementById(x).innerHTML;
@@ -123,6 +155,9 @@
         document.getElementById(x).innerHTML=count;
     };
 
+
 </script>
+
+
 
 {% endblock %}
