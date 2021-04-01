@@ -64,4 +64,26 @@ def management():
 
 @auth.route('/promomod', methods=['GET','POST'])
 def promo_mod():
-    return render_template("promo.html")
+
+    promotions = requests.request('GET', 'http://127.0.0.1:5004/promotion', json = None)
+    promotions_status = promotions.status_code
+    if(promotions_status == 200):
+        p_data = promotions.json()
+    else:
+        p_data =None
+
+    data = request.form
+    promo_name = data['promotion_code']
+    promo_discount = data['discount']
+    
+    send_data ={'promotion_code':promo_name,'discount': promo_discount}
+    send = requests.post('http://127.0.0.1:5004/promotion', json = send_data)
+    print(send.text)
+    if send.status_code == 201 :
+        flash("Promo Code has been added", category='error')
+    else:
+        flash("Promo Code has been added before", category='error')
+
+
+
+    return render_template("promo.html", p_data=p_data)
