@@ -6,7 +6,7 @@ version: "3.8"
 services:
  
   ###################################
-  # Order: The Fish microservice
+  # Fish: The Fish microservice
   ###################################
   fish:
     build:
@@ -15,34 +15,75 @@ services:
     image: jaredng24/fish:1.0
     restart: always
     environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/fish
+      #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/fish
+      dbURL: mysql+mysqlconnector://root@localhost:3306/fish
       PYTHONUNBUFFERED: 1
- 
-  # #######################################################
-  # # User: The User microservice
-  # #######################################################
-  user:
-    build:
-      context: ./
-      dockerfile: user.Dockerfile
-    image: jaredng24/user:1.0
-    restart: always
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/user
-      PYTHONUNBUFFERED: 1
+    ports:
+      - "5000:5000"
+  
 
   # #######################################################
   # # Promotion: The Promotion microservice
   # #######################################################
-  promotion:
-    build:
-      context: ./
-      dockerfile: promotion.Dockerfile
-    image: jaredng24/promotion:1.0
-    restart: always
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/promotion
-      PYTHONUNBUFFERED: 1
+  # promotion:
+  #   build:
+  #     context: ./
+  #     dockerfile: promotion.Dockerfile
+  #   image: jaredng24/promotion:1.0
+  #   restart: always
+  #   environment:
+  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/promotion
+  #     PYTHONUNBUFFERED: 1
+
+  # # #######################################################
+  # # # Order: The Order microservice
+  # # #######################################################
+  # order:
+  #   build:
+  #     context: ./
+  #     dockerfile: promotion.Dockerfile
+  #   image: jaredng24/order:1.0
+  #   restart: always
+  #   environment:
+  #     dbURL: mysql+mysqlconnector://root@localhost:3306/fish_order
+  #     PYTHONUNBUFFERED: 1
+
+
+  # # #######################################################
+  # # # Payment: The Payment microservice
+  # # #######################################################
+  # payment:
+  #   build:
+  #     context: ./
+  #     dockerfile: payment.Dockerfile
+  #   image: jaredng24/payment:1.0
+  #   restart: always
+  #   environment:
+  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/payment
+  #     PYTHONUNBUFFERED: 1
+
+
+  # #######################################################
+  # # Payment_manage: The Payment Manage microservice
+  # #######################################################
+  # payment_manage:
+  #   build:
+  #     context: ./
+  #     dockerfile: payment_mange.Dockerfile
+  #   image: jaredng24/payment_manage:1.0
+  #   restart: always
+  #   depends_on:
+  #     - promotion
+  #     - order
+  #     - fish
+  #     - payment
+  #     #- rabbitmq
+  #   environment:
+  #     # rabbit_host: rabbitmq
+  #     # rabbit_port: 5672
+  #     PYTHONUNBUFFERED: 1
+  #   # ports:
+  #   #   - "5100:5100"
 
   # ####################################
   # # RabbitMQ: The messaging broker   

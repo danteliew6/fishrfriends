@@ -17,10 +17,11 @@ def index():
 def home():
     try:
         fish = requests.request('GET', 'http://127.0.0.1:5000/fish', json = None)
-        data= jsonify(fish)
+        data= fish.json()
     except:
         data = {'code': 400, 'data': {'fishes': [{'description': 'Theres no Fish', 'fish_id': 1, 'fishname': 'salmon', 'price': 5.0, 'stock_qty': 100}]}}
 
+    print(data)
 
     return render_template("home.html", fishes = data['data']['fishes'], datacode = data['code'])
 

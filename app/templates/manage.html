@@ -9,7 +9,102 @@
     <li>See the remaining fishes</li>
     <li>See current promo codes and click to modify</li>
 </ol>
+{#
+{{orders_data['data']['orders']}}
+{{code}}
 
+{{fish_data}} 
+{{fish_code}}
+
+#}
+{% set testing = [] %}
+{{testing}}
+
+{% for content in fish_data['data']['fishes'] %}
+    {% do testing.append([content.fish_id,content.fishname]) %}
+{% endfor %}
+{{testing}}
+
+{{p_data}}
+
+<table class="table table-striped table-hover text-center">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Code</th>
+        <th scope="col">Discount</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for content in p_data['data']['promotions'] %}
+      <tr>
+        <th scope="row">{{content.promotion_code}}</th>
+        <td>{{content.discount}}%</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+
+
+
+
+<table class="table table-stripede table-hover text-center">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Name</th>
+        <th scope="col">Price</th>
+        <th scope="col">Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for content in fish_data['data']['fishes'] %}
+      <tr>
+        <th scope="row">{{content.fish_id}}</th>
+        <td>{{content.fishname}}</td>
+        <td>${{content.price}}</td>
+        <td>{{content.stock_qty}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+
+<table class="table table-striped table-hover text-center">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">Id</th>
+        <th scope="col">Amount</th>
+        <th scope="col">Items</th>
+        <th scope="col">Ordered By</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for content in orders_data['data']['orders'] %}
+      <tr>
+        <th scope="row">{{content.fish_order_id}}</th>
+        <td>{{content.amount}}</td>
+        <td>
+            {{content.order_items}}
+        </td>
+        <td>{{content.username}}</td>
+      </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+
+{% if orders != None %}
+
+{{orders}}
+{{data}}
+{%if orders == 500%}
+    This is working!
+{%endif%}
+
+{%endif%}
 
 
 {%endblock%}
