@@ -1,6 +1,7 @@
 #login logout signup
 
-from flask import Blueprint, render_template, request, flash
+from flask import Blueprint, render_template, request, flash, jsonify
+import requests
 
 auth = Blueprint('auth', __name__)
 
@@ -33,3 +34,13 @@ def sign_up():
             #add to database
 
     return render_template("signup.html")
+
+
+@auth.route('/manage',methods=['GET'])
+def management():
+    orders = requests.request('GET', 'http://127.0.0.1:5002/order', json = None)
+    return render_template("manage.html",orders = orders)
+
+@auth.route('/promomod', methods=['GET','POST'])
+def promo_mod():
+    return render_template("promo.html")
