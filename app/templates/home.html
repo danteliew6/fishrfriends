@@ -1,11 +1,27 @@
 {% extends "base.html" %}
 {% block title %} Home {% endblock %}
 {%block content%} 
-<h1> This is our homepage  Welcome to FISH R FRIENDS</h1>
+<style>
+    p1 {text-align: center;
+    }
+    .containercenter {
+        display: flex;
+        justify-content: center;
+        margin-top: 100px;
+    }   
+</style>
+
+
+<div>
+    <h1 class="containercenter">Welcome to FISH R FRIENDS</h1>
+</div>
+
+<!-- If there is fish, will run page -->
+{% if datacode == 200 %}
 {{fishes}}
 {{data}}
 
-{% if datacode == 200 %}
+
 <div class="card-deck">
     {%for fish in fishes%}
     {% set name = 'images/' + fish['fishname'] + '.png' %}
@@ -25,11 +41,7 @@
 
     {% endfor%}
 
-    
-
-
 </div>
-{%endif%}
 
     {% set price_array =[] %}
 
@@ -40,11 +52,29 @@
     {{price_array}}
 
 <button onclick="calculate()" >calculate</button>
+
+{% else %}
+
+<!--If no fish in database-->
+<div class="containercenter">
+        <img src="../static/images/outofstock.png">
+</div>
+
+<p class="containercenter" style="font-size:30px;">
+    All our fishes are out of stock!
+</p>
+<p class="containercenter" style="font-size:20px;">
+    Our fishermen have headed out to sea to catch more fish, please come back again at a later time!
+</p>
+
+{%endif%}
+
 <p id = "result"></p>
 
 
 
 <script>
+    
 
     function calculate(){
         console.log();
@@ -69,13 +99,5 @@
     };
 
 </script>
-
-
-
-{% if condition == False %}
-Yes it is True!
-{% else %}
-No it is not True
-{% endif %}
 
 {% endblock %}
