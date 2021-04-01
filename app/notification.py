@@ -33,7 +33,7 @@ def processOrderLog(order):
     port = 587  # For starttls
     sender_email = "fishrfriendst3@gmail.com"
     password = "Fishrfriendst3!"
-    receiver_email = "danteliew6@gmail.com"
+    receiver_email = "remus.chan.2019@sis.smu.edu.sg"
     message = MIMEMultipart("alternative")
     message["Subject"] = "Order Confirmation: #123 -> hardcoded order id" 
     message["From"] = sender_email

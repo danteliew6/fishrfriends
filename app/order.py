@@ -32,11 +32,13 @@ class FishOrder(db.Model):
     # payment_id = db.Column(db.Integer, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     username = db.Column(db.String(100), nullable=False)
+    collection_datetime = db.Column(db.DateTime, nullable = False)
 
-    def __init__(self, amount, username):
+    def __init__(self, amount, username, collection_datetime):
         # self.payment_id =  payment_id
         self.amount = amount
         self.username = username
+        self.collection_datetime = collection_datetime
 
     def json(self):
 
@@ -44,7 +46,8 @@ class FishOrder(db.Model):
             'fish_order_id': self.fish_order_id,
             # 'payment_id': self.payment_id,
             'amount' : self.amount,
-            'username' : self.username
+            'username' : self.username,
+            'collection_datetime' : self.collection_datetime
         }
 
 
@@ -148,7 +151,7 @@ def create_order():
     data =request.get_json()
 
 
-    order = FishOrder(amount=data['amount'], username=data['username'])
+    order = FishOrder(amount=data['amount'], username=data['username'], collection_datetime=data['collection_datetime'])
     db.session.add(order)
     try:
         db.session.commit()

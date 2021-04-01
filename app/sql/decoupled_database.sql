@@ -77,6 +77,7 @@ CREATE TABLE fish_order (
   fish_order_id int NOT NULL AUTO_INCREMENT,
   username varchar(100) NOT NULL,
   amount FLOAT NOT NULL,
+  collection_datetime DATETIME NOT NULL,
   CONSTRAINT fish_order_pk PRIMARY KEY (fish_order_id)
   ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8; 
 
