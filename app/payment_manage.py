@@ -20,7 +20,6 @@ CORS(app)
 promotion_URL = environ.get('promotion_URL') or "http://localhost:5004/promotion"
 fish_order_URL = environ.get('fish_order_URL') or "http://localhost:5002/order"
 fish_URL = environ.get('fish_URL') or "http://localhost:5000/fish"
-user_URL = environ.get('user_URL') or "http://localhost:5001/user"
 payment_URL = environ.get('payment_URL') or "http://localhost:5003/payment"
 
 

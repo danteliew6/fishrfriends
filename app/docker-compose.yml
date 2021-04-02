@@ -29,7 +29,7 @@ services:
     build:
       context: ./
       dockerfile: promotion.Dockerfile
-    image: jaredng24/promotion:1.0
+    image: danteliew6/promotion:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/promotion
@@ -88,6 +88,10 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
+      promotion_URL: http://promotion:5004/promotion
+      fish_order_URL: http://order:5002/order
+      fish_URL: http://fish:5000/fish
+      payment_URL: http://payment:5003/payment
     ports:
       - "5005:5005"
 
