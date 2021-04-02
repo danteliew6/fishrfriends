@@ -1,7 +1,7 @@
 version: "3.8"
 
-# volumes:
-#   rabbitmq_data:
+volumes:
+  rabbitmq_data:
 
 services:
  
@@ -12,159 +12,114 @@ services:
     build:
       context: ./
       dockerfile: fish.Dockerfile
-    image: jaredng24/fish:1.0
+    image: danteliew6/fish:1.0
     restart: always
     environment:
-      #dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/fish
-      dbURL: mysql+mysqlconnector://root@localhost:3306/fish
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/fish
+      # dbURL: mysql+mysqlconnector://root@localhost:3306/fish
       PYTHONUNBUFFERED: 1
     ports:
       - "5000:5000"
   
 
-  # #######################################################
-  # # Promotion: The Promotion microservice
-  # #######################################################
-  # promotion:
-  #   build:
-  #     context: ./
-  #     dockerfile: promotion.Dockerfile
-  #   image: jaredng24/promotion:1.0
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/promotion
-  #     PYTHONUNBUFFERED: 1
+  #######################################################
+  # Promotion: The Promotion microservice
+  #######################################################
+  promotion:
+    build:
+      context: ./
+      dockerfile: promotion.Dockerfile
+    image: danteliew6/promotion:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/promotion
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5004:5004"
 
-  # # #######################################################
-  # # # Order: The Order microservice
-  # # #######################################################
-  # order:
-  #   build:
-  #     context: ./
-  #     dockerfile: promotion.Dockerfile
-  #   image: jaredng24/order:1.0
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://root@localhost:3306/fish_order
-  #     PYTHONUNBUFFERED: 1
-
-
-  # # #######################################################
-  # # # Payment: The Payment microservice
-  # # #######################################################
-  # payment:
-  #   build:
-  #     context: ./
-  #     dockerfile: payment.Dockerfile
-  #   image: jaredng24/payment:1.0
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/payment
-  #     PYTHONUNBUFFERED: 1
+  #######################################################
+  # Order: The Order microservice
+  #######################################################
+  order:
+    build:
+      context: ./
+      dockerfile: order.Dockerfile
+    image: danteliew6/order:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/fish_order
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5002:5002"
 
 
-  # #######################################################
-  # # Payment_manage: The Payment Manage microservice
-  # #######################################################
-  # payment_manage:
-  #   build:
-  #     context: ./
-  #     dockerfile: payment_mange.Dockerfile
-  #   image: jaredng24/payment_manage:1.0
-  #   restart: always
-  #   depends_on:
-  #     - promotion
-  #     - order
-  #     - fish
-  #     - payment
-  #     #- rabbitmq
-  #   environment:
-  #     # rabbit_host: rabbitmq
-  #     # rabbit_port: 5672
-  #     PYTHONUNBUFFERED: 1
-  #   # ports:
-  #   #   - "5100:5100"
+  #######################################################
+  # Payment: The Payment microservice
+  #######################################################
+  payment:
+    build:
+      context: ./
+      dockerfile: payment.Dockerfile
+    image: danteliew6/payment:1.0
+    restart: always
+    environment:
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/payment
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5003:5003"
 
-  # ####################################
-  # # RabbitMQ: The messaging broker   
-  # ####################################
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   hostname: esd-rabbit
-  #   restart: always
-  #   ports:
-  #     - "5672:5672"
-  #     - "15672:15672"
-  #   volumes: 
-  #     - rabbitmq_data:/var/lib/rabbitmq
+
+  #######################################################
+  # Payment_manage: The Payment Manage microservice
+  #######################################################
+  payment_manage:
+    build:
+      context: ./
+      dockerfile: payment_manage.Dockerfile
+    image: danteliew6/payment_manage:1.0
+    restart: always
+    depends_on:
+      - promotion
+      - order
+      - fish
+      - payment
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1
+      promotion_URL: http://promotion:5004/promotion
+      fish_order_URL: http://order:5002/order
+      fish_URL: http://fish:5000/fish
+      payment_URL: http://payment:5003/payment
+    ports:
+      - "5005:5005"
+
+  ####################################
+  # RabbitMQ: The messaging broker   
+  ####################################
+  rabbitmq:
+    image: rabbitmq:3-management
+    hostname: esd-rabbit
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    volumes: 
+      - rabbitmq_data:/var/lib/rabbitmq
       
-  # #################################################
-  # # Activity Log: The Activity Log microservice
-  # #################################################
-  # activity_log:
-  #   build:
-  #     context: ./
-  #     dockerfile: activity_log.Dockerfile
-  #   image: jaredng24/activity_log:esd
-  #   restart: always
-  #   depends_on:
-  #     - rabbitmq
-  #   environment:
-  #     rabbit_host: rabbitmq
-  #     rabbit_port: 5672
-  #     PYTHONUNBUFFERED: 1
-
-  # ###################################
-  # # Error: The Error microservice
-  # ###################################
-  # error:
-  #   build:
-  #     context: ./
-  #     dockerfile: error.Dockerfile
-  #   image: jaredng24/error:esd
-  #   restart: always
-  #   depends_on:
-  #     - rabbitmq
-  #   environment:
-  #     rabbit_host: rabbitmq
-  #     rabbit_port: 5672
-  #     PYTHONUNBUFFERED: 1
-
-  # ###############################################
-  # # Place Order: The Place Order microservice
-  # ###############################################
-  # place_order:
-  #   build:
-  #     context: ./
-  #     dockerfile: place_order.Dockerfile
-  #   image: jaredng24/place_order:esd
-  #   restart: always
-  #   depends_on:
-  #     - order
-  #     - shipping_record
-  #     - activity_log
-  #     - error
-  #     - rabbitmq
-  #   environment:
-  #     rabbit_host: rabbitmq
-  #     rabbit_port: 5672
-  #     order_URL: http://order:5001/order
-  #     shipping_record_URL: http://shipping_record:5002/shipping_record 
-  #     PYTHONUNBUFFERED: 1
-  #   ports:
-  #     - "5100:5100"
-
-  # ##################################
-  # # Book: The Book microservice
-  # ##################################
-  # book:
-  #   build:
-  #     context: ./
-  #     dockerfile: book.Dockerfile
-  #   image: jaredng24/book:esd
-  #   restart: always
-  #   environment:
-  #     dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/book
-  #     PYTHONUNBUFFERED: 1
-  #   ports:
-  #     - "5000:5000"
+  #################################################
+  # Notification: The Notification microservice
+  #################################################
+  notification:
+    build:
+      context: ./
+      dockerfile: notification.Dockerfile
+    image: danteliew6/notification:1.0
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      PYTHONUNBUFFERED: 1

@@ -20,7 +20,6 @@ CORS(app)
 promotion_URL = environ.get('promotion_URL') or "http://localhost:5004/promotion"
 fish_order_URL = environ.get('fish_order_URL') or "http://localhost:5002/order"
 fish_URL = environ.get('fish_URL') or "http://localhost:5000/fish"
-user_URL = environ.get('user_URL') or "http://localhost:5001/user"
 payment_URL = environ.get('payment_URL') or "http://localhost:5003/payment"
 
 
@@ -37,6 +36,7 @@ def manage_payment():
             result = process_payment(order_info)
 
             if result['code'] in range (200, 300):
+                    order_info['fish_order_id'] = result['data']['order_info']['fish_order_id']
                     amqp_setup.check_setup()
                     message = json.dumps(order_info)
                     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="confirmed.orders", body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
@@ -63,19 +63,6 @@ def manage_payment():
 
 
 def process_payment(order_info):
-    # Validate promotion code
-    # promotion_code_result = invoke_http(promotion_URL + "?promotion_code" + order_info['promotion_code'], method='GET', json=None)
-    # code = promotion_code_result['code']
-
-    # # Return invalid promotion code
-    # if code not in range(200, 300):
-    #     return {
-    #         "code": 500,
-    #         "data": {"promotion_code_result": promotion_code_result},
-    #         "message": "Invalid promotion code or promotion code error."
-    #     }
-    # # End of promotion code validation
-
 
     #Update fish quantity
     fish_result = invoke_http(fish_URL, method = 'PUT', json = order_info['order_items'])
@@ -90,19 +77,6 @@ def process_payment(order_info):
         }    
     #End of fish quantity update
 
-
-    # STRIPE API IMPLEMENTATION HERE
-    # Hardcoding success code and payment id here first
-    stripe_response_json = {
-        'payment_status' : 201
-    }
-
-    if stripe_response_json['payment_status'] not in range(200,300):
-        return {
-            "code": 502,
-            "payment_result": "Unsuccessful transaction!",
-            "message": "Denied payment by stripe service."
-        }          
     
     # Add order to database
 
@@ -133,7 +107,8 @@ def process_payment(order_info):
             "data" : payment_json,
             "message": "Unsuccessful payment!"
         }      
-    # END OF STRIPE API IMPLEMENTATION
+
+    order_info['fish_order_id'] = fish_order_result['data']['fish_order_id']
 
     return {
         'code' : 201,

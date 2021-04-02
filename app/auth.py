@@ -65,25 +65,37 @@ def management():
 @auth.route('/promomod', methods=['GET','POST'])
 def promo_mod():
 
-    promotions = requests.request('GET', 'http://127.0.0.1:5004/promotion', json = None)
-    promotions_status = promotions.status_code
-    if(promotions_status == 200):
-        p_data = promotions.json()
-    else:
-        p_data =None
+    def generate():
+        promotions = requests.request('GET', 'http://127.0.0.1:5004/promotion', json = None)
+        promotions_status = promotions.status_code
+        if(promotions_status == 200):
+            p_data = promotions.json()
+        else:
+            p_data =None
+        return p_data
 
-    data = request.form
-    promo_name = data['promotion_code']
-    promo_discount = data['discount']
-    
-    send_data ={'promotion_code':promo_name,'discount': promo_discount}
-    send = requests.post('http://127.0.0.1:5004/promotion', json = send_data)
-    print(send.text)
-    if send.status_code == 201 :
-        flash("Promo Code has been added", category='error')
-    else:
-        flash("Promo Code has been added before", category='error')
+    p_data = generate()
 
+    del_data=request.form.get("delete_promo")
+    print(del_data)
+    promo_data = request.form.get("promotion_code")
+    print(promo_data)
+    dis_data = request.form.get("discount")
+    print(dis_data)
+    if(del_data != None):
+        return_del_data = requests.delete('http://127.0.0.1:5004/promotion/'+ str(del_data))
+        print(return_del_data.text)
+        p_data = generate()
+        return render_template("promo.html", p_data=p_data)
 
+    if(promo_data != None):
+        send_data ={'promotion_code':promo_data,'discount': dis_data}
+        return_send = requests.post('http://127.0.0.1:5004/promotion', json = send_data)
+        if(return_send.status_code == 201):
+            flash("Promo Code has been added", category='success')
+            p_data = generate()
+            return render_template("promo.html", p_data=p_data)
+        else:
+            flash("Promo Code has been added before", category='error')
 
     return render_template("promo.html", p_data=p_data)
