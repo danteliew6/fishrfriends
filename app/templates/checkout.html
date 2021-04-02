@@ -6,10 +6,34 @@
 <script src="https://www.paypal.com/sdk/js?client-id=AeKkXHKQFzgRzsn8DD3p0MXMZbQN86DaBS9YUDCv5pvbP8r7j6tSiYpyIo6u9yzkm6qe0dN0yWvxWC20"> // Replace YOUR_CLIENT_ID with your sandbox client ID
 </script>
 
-<div id="paypal-button-container">
-{{FinalValue}}
+<style>
+    .cardshadow {
+    /* Add shadows to create the "card" effect */
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+    transition: 0.3s;
+    }
+
+    /* On mouse-over, add a deeper shadow */
+    .cardshadow:hover {
+    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+    }
+
+</style>
+
+<div class="d-flex justify-content-center p-2 mt-5">
+    <div class="card cardshadow text-center m-5" style="min-width: 400px;">
+        <div class="card-body mt-5">
+          <h1>${{FinalValue}}</h1>
+        </div>
+      <div class="d-flex justify-content-center m-3">
+        <div id="paypal-button-container">
+        </div>
+      </div>
+    </div>
+
 
 </div>
+
 
 
 
