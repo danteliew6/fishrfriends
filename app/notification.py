@@ -33,11 +33,15 @@ def processOrderLog(order):
     port = 587  # For starttls
     sender_email = "fishrfriendst3@gmail.com"
     password = "Fishrfriendst3!"
-    receiver_email = "danteliew6@gmail.com"
+    receiver_email = order['username']
     message = MIMEMultipart("alternative")
-    message["Subject"] = "Order Confirmation: #123 -> hardcoded order id" 
+    message["Subject"] = "Order Confirmation: #" + str(order['fish_order_id']) 
     message["From"] = sender_email
     message["To"] = receiver_email
+
+    order_items = ""
+    for item in order['order_items']:
+        order_items += "<tr><td>Fish " + str(item['fish_id']) + "</td><td>" + str(item['quantity']) + "</td></tr>"
 
     html = """\
     <html>
@@ -47,28 +51,27 @@ def processOrderLog(order):
 
             Here are your order details: <br>
 
-            <b>Collection Date and Time: #variable value</b>
+            <b>Collection Date and Time: {collection_datetime}</b>
         </p>
-        <table>
+        <table border = '1px'>
             <tr>
-                <th>order item</th>
-                <th>order quantity, price etc</th>
+                <th>Order Item</th>
+                <th>Quantity</th>
             </tr>
-            <tr>
-                <td>Total amount:</td>
-                <td>#variable value for amount</td>
-            </tr>
+            {order_items}
         </table>
 
+        <p><b>Total Amount: ${amount}</b></p>
+
         <p>
-            FishRFriends <br>
+            FishRFriends Pte Ltd <br>
             Contact us at: <br>
             42 Wallaby Way, Sydney <br>
             PH: 9123 4567 
         </p>
     </body>
     </html>
-    """
+    """.format(collection_datetime=order['collection_datetime'], order_items=order_items, amount=str(order['amount']))
     message.attach(MIMEText(html, "html")) 
 
     # Create a secure SSL context
