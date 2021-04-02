@@ -11,6 +11,13 @@
         justify-content: center;
         margin-top: 100px;
     }   
+
+    .card {
+    /* Set max width of card */
+    min-width: 200px;
+    max-width: 300px;
+    }
+
     .cardshadow {
     /* Add shadows to create the "card" effect */
     box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
@@ -35,13 +42,17 @@
 
 <!-- If there is fish, will run page -->
 {% if datacode == 200 %}
+<div class= "containercenter" style="padding-left: 100px; padding-right: 100px">
+    <input type="text" class ="form-control mr-sm-2" id="myInput" onkeyup="fishFilter()" placeholder="Search Fish by Fish ID">
+</div>
 
-<div class="card-deck " style="margin-top: 80px;">
+
+<div id="allfishes" class="card-deck" style="margin-top: 80px;">
     {%for fish in fishes%}
     {% set name = 'images/' + fish['fishname'] + '.png' %}
     {% set countid = fish['fish_id'] %}
     
-    <div class="card cardshadow border-light">
+    <div class="card cardshadow border-light onefish">
         <p hidden class="fishid">{{fish['fish_id']}}</p>
       <img class="card-img-top" src={{ url_for('static', filename = name) }} alt="Card image cap">
       <div class="card-body">
@@ -72,8 +83,6 @@
 
 </div>
 
-<!--{{price_array}}-->
-
 <div style="margin-bottom: 40px; margin-top: 30px">
     <p style="text-align: right; font-size: 30px;">
         Total Price: $<span id = "result" >0</span>
@@ -82,10 +91,11 @@
     <button class="btn btn-dark btn-lg" style="float: right;" onclick="calculate()" >Calculate Total Price</button>
 </div>
 <div style="margin-bottom: 50px; margin-top: 50px; padding-top: 50px; padding-bottom:50px">
-        <button class="btn btn-primary btn-lg" style="float: right;" onclick="checkout()" >Checkout</button>
+    <form action="checkout" method="post">
+        <input type="hidden" name="orders" value="">
+        <button class="btn btn-primary btn-lg" style="float: right;" onclick="checkout()" type="submit" value="orders">Checkout</button>
+    </form>
 </div>
-
-
 
 {% else %}
 
@@ -142,10 +152,11 @@
         
         //JSON string to send to checkout
         console.log(string);
+        document.getElementById("orders").value = string;
         
 
         }
-    //var button = document.getElementById('1'), count = 0 ;
+    
     function addItem(x,y){
         count = document.getElementById(x).innerHTML;
         count = parseInt(count)
@@ -155,9 +166,25 @@
         document.getElementById(x).innerHTML=count;
     };
 
+    // Displays or hides cards base on search bar filter
+    function fishFilter() {
+  
+        var input, filter, ul, li, a, i, txtValue;
+        input = document.getElementById('myInput');
+        filter = input.value;
+        ul = document.getElementById("allfishes");
+        li = ul.getElementsByClassName('onefish');
 
+        // Loop through all list items, and hide those who don't match the search query
+        for (i = 0; i < li.length; i++) {
+            if (li[i].getElementsByTagName("p")[0].innerHTML.indexOf(filter) > -1) {
+                li[i].style.display = "";
+            } else {
+            li[i].style.display = "none";
+            }
+        }    
+}
+    
 </script>
-
-
 
 {% endblock %}
