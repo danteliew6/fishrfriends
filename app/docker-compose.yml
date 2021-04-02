@@ -3,8 +3,14 @@ version: "3.8"
 volumes:
   rabbitmq_data:
 
+
+networks:
+  default:
+    external: 
+      name: kong_kong-net
+      
 services:
- 
+
   ###################################
   # Fish: The Fish microservice
   ###################################
