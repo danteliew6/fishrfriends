@@ -72,18 +72,24 @@ def promo_mod():
     else:
         p_data =None
 
+
     data = request.form
-    promo_name = data['promotion_code']
-    promo_discount = data['discount']
-    
-    send_data ={'promotion_code':promo_name,'discount': promo_discount}
-    send = requests.post('http://127.0.0.1:5004/promotion', json = send_data)
-    print(send.text)
-    if send.status_code == 201 :
-        flash("Promo Code has been added", category='error')
-    else:
-        flash("Promo Code has been added before", category='error')
+    print(data)
 
-
+    if list(data) != []: 
+        if data['promotion_code'] != '':
+            promo_name = data['promotion_code']
+            promo_discount = data['discount']
+            send_data ={'promotion_code':promo_name,'discount': promo_discount}
+            send = requests.post('http://127.0.0.1:5004/promotion', json = send_data)
+            print(send.text)
+            if send.status_code == 201 :
+                flash("Promo Code has been added", category='error')
+            else:
+                flash("Promo Code has been added before", category='error')
+        else:
+            deleted = data['delete']
+            del_data = requests.delete('http://127.0.0.1:5004/promotion/'+ str(deleted))
+            print(del_data.text)
 
     return render_template("promo.html", p_data=p_data)
