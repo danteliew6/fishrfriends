@@ -6,9 +6,11 @@
 <script src="https://www.paypal.com/sdk/js?client-id=AeKkXHKQFzgRzsn8DD3p0MXMZbQN86DaBS9YUDCv5pvbP8r7j6tSiYpyIo6u9yzkm6qe0dN0yWvxWC20"> // Replace YOUR_CLIENT_ID with your sandbox client ID
 </script>
 
-
-<h1>The total price is ${{data['price']}} the breakdown is as shown below:</h1>
-<p id = 'hidden-dollars'>{{data['price']}}</p>
+<div style="margin:30px">
+<h1>The total price is ${{data['price']}}</h1>
+  <h3>The breakdown is as shown below:</h3>
+</div>
+<p hidden id = 'hidden-dollars'>{{data['price']}}</p>
 <table class="table table-bordered">
   <thead>
     <tr>
@@ -52,7 +54,7 @@
 <div class="d-flex justify-content-center p-2 mt-5">
     <div class="card cardshadow text-center m-5" style="min-width: 400px;">
         <div class="card-body mt-5">
-          <h4>Total cost: ${{FinalValue}}</h4>
+          <h2>Total cost: ${{data['price']}}</h2>
         </div>
       <div class="d-flex justify-content-center m-3">
         <div id="paypal-button-container">

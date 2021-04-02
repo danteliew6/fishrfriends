@@ -43,12 +43,13 @@
 <!-- If there is fish, will run page -->
 {% if datacode == 200 %}
 <div class= "containercenter" style="padding-left: 100px; padding-right: 100px">
-    <input type="text" class ="form-control mr-sm-2" id="myInput" onkeyup="fishFilter()" placeholder="Search Fish by Fish ID">
+    <input type="text" class ="form-control mr-sm-2" id="myInput" onkeyup="fishFilter()" placeholder="Search Fish by Fish Name">
 </div>
 
 
 <div id="allfishes" class="card-deck" style="margin-top: 80px;">
     {%for fish in fishes%}
+    {% if fish['stock_qty'] > 0 %}
     {% set name = 'images/' + fish['fishname'] + '.png' %}
     {% set countid = fish['fish_id'] %}
     
@@ -78,8 +79,8 @@
             </p>
       </div>
     </div>
-
-    {% endfor%}
+    {% endif %}
+    {% endfor %}
 
 </div>
 
@@ -93,7 +94,7 @@
 
 <div style="margin-bottom: 50px; margin-top: 50px; padding-top: 50px; padding-bottom:50px">
     <form action="/checkout" method="POST">
-    <p>Name<input type = "text" name = "Name" id='secret-json'/></p>
+    <input type = "hidden" name = "Name" id='secret-json'/>
     <button class="btn btn-primary btn-lg" style="float: right;" onclick="checkout()" type="submit" value="orders">Checkout</button>
     </form>
 </div>
@@ -184,7 +185,7 @@
 
         // Loop through all list items, and hide those who don't match the search query
         for (i = 0; i < li.length; i++) {
-            if (li[i].getElementsByTagName("p")[0].innerHTML.indexOf(filter) > -1) {
+            if (li[i].getElementsByTagName("h5")[0].innerHTML.indexOf(filter) > -1) {
                 li[i].style.display = "";
             } else {
             li[i].style.display = "none";

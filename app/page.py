@@ -24,7 +24,7 @@ def home():
 
     return render_template("home.html", fishes = data['data']['fishes'], datacode = data['code'])
 
-@page.route('/checkout', methods=['GET','POST'])
+@page.route('/checkout', methods=['POST'])
 def paypal():
     result = 0
     if request.method == 'POST':
