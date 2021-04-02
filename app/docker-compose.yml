@@ -115,7 +115,7 @@ services:
     build:
       context: ./
       dockerfile: notification.Dockerfile
-    image: jaredng24/notification:1.0
+    image: danteliew6/notification:1.0
     restart: always
     depends_on:
       - rabbitmq
