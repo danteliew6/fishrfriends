@@ -107,6 +107,32 @@ def get_all():
         }
         ), 404
 
+
+@app.route("/upcoming_orders")
+def get_all_upcoming():
+    orderlist = FishOrder.query.filter(FishOrder.collection_datetime > datetime.now())
+    if orderlist:
+        data_json = {
+            "code" : 200,
+            "data" : {
+                "orders": []
+            }
+        }
+
+        for order in orderlist:
+            order = order.json()
+            order_items = FishOrderItem.query.filter_by(fish_order_id = order['fish_order_id'])
+            order['order_items'] = [item.json() for item in order_items]
+            data_json['data']['orders'].append(order)
+        return jsonify(data_json)
+
+    return jsonify(
+        {
+            "code": 404,
+            "message": "There are no orders."
+        }
+        ), 404
+
 #working
 @app.route("/order/<string:fish_order_id>")
 def find_by_order_id(fish_order_id):
