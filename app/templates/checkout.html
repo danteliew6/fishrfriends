@@ -6,8 +6,33 @@
 <script src="https://www.paypal.com/sdk/js?client-id=AeKkXHKQFzgRzsn8DD3p0MXMZbQN86DaBS9YUDCv5pvbP8r7j6tSiYpyIo6u9yzkm6qe0dN0yWvxWC20"> // Replace YOUR_CLIENT_ID with your sandbox client ID
 </script>
 
+
+<h1>The total price is ${{data['price']}} the breakdown is as shown below:</h1>
+<p id = 'hidden-dollars'>{{data['price']}}</p>
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">Fish ID</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for fishes in data['orders'] %}
+    {% if fishes.quantity != '0' %}
+    <tr>
+      <td>{{fishes.fish_id}}</td>
+      <td>{{fishes.quantity}}</td>
+      <td>${{fishes.price}}</td>
+    </tr>
+    {% endif %}
+    {% endfor %}
+
+  </tbody>
+</table>
+
+
 <div id="paypal-button-container">
-{{FinalValue}}
 
 </div>
 
@@ -15,12 +40,14 @@
 
 <!-- Add the checkout buttons, set up the order and approve the order -->
 <script>
+  var total_price = document.getElementById('hidden-dollars').innerHTML;
+
   paypal.Buttons({
     createOrder: function(data, actions) {
       return actions.order.create({
         purchase_units: [{
           amount: {
-            value: '0.01'
+            value: total_price
           }
         }]
       });

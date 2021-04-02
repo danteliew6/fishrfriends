@@ -90,12 +90,19 @@
     </br>
     <button class="btn btn-dark btn-lg" style="float: right;" onclick="calculate()" >Calculate Total Price</button>
 </div>
+
 <div style="margin-bottom: 50px; margin-top: 50px; padding-top: 50px; padding-bottom:50px">
-    <form action="checkout" method="post">
-        <input type="hidden" name="orders" value="">
-        <button class="btn btn-primary btn-lg" style="float: right;" onclick="checkout()" type="submit" value="orders">Checkout</button>
+    <form action="/checkout" method="POST">
+    <p>Name<input type = "text" name = "Name" id='secret-json'/></p>
+    <button class="btn btn-primary btn-lg" style="float: right;" onclick="checkout()" type="submit" value="orders">Checkout</button>
     </form>
 </div>
+
+<div'>
+    <p id ='hidden-table'></p>
+</div>
+
+
 
 {% else %}
 
@@ -132,28 +139,28 @@
         let priceList = document.getElementsByClassName("price");
         let fishList = document.getElementsByClassName("fishid");
         let countList = document.getElementsByClassName("quantity");
-        var obj = new Object();
-        var string;
+        var checkout_json = {
+            'price': 0,
+            'orders' : []
+        }
         var total = 0;
         for( i = 0; i < priceList.length ; i++){
-            obj.fish_id = parseInt(fishList[i].innerHTML);
-            obj.quantity = parseInt(countList[i].innerHTML);
-            obj.price = parseInt(priceList[i].innerHTML);
-            if (i==0) {
-                string = JSON.stringify(obj);
-            } else {
-            string += JSON.stringify(obj);
+            var string = {};
+            string['fish_id'] = "" + parseInt(fishList[i].innerHTML)  ;
+            string['quantity'] = "" + parseInt(countList[i].innerHTML);
+            string['price'] = "" + parseInt(priceList[i].innerHTML);           
             total += parseInt(countList[i].innerHTML) * parseFloat(priceList[i].innerHTML);
-            }
+            checkout_json['orders'].push(string);
         }
-        let price = total;
+        checkout_json['price']  = total;
 
-        string = "{"+"\"price\": "+price+""+", \"orders\" : [" + string + "]}";
+
         
         //JSON string to send to checkout
-        console.log(string);
-        document.getElementById("orders").value = string;
-        
+        //console.log(string);
+        //document.getElementById("orders").value = string;
+        console.log(checkout_json);
+        document.getElementById("secret-json").value = JSON.stringify(checkout_json);
 
         }
     

@@ -2,7 +2,8 @@
 #this file will have the URLS inside of it
 from flask import Blueprint, render_template, jsonify
 import requests
-
+from flask import request
+import json
 
 page = Blueprint('page', __name__)
 
@@ -21,13 +22,30 @@ def home():
     except:
         data = {'code': 400, 'data': {'fishes': [{'description': 'Theres no Fish', 'fish_id': 1, 'fishname': 'salmon', 'price': 5.0, 'stock_qty': 100}]}}
 
-    print(data)
-
     return render_template("home.html", fishes = data['data']['fishes'], datacode = data['code'])
 
-@page.route('/checkout')
+@page.route('/checkout', methods=['GET','POST'])
 def paypal():
-    return render_template('checkout.html', FinalValue='123', password="1234")
+    result = 0
+    if request.method == 'POST':
+        result = request.form
+        #print(type(result))
+        #print(jsonify(result))
+        #print(result['Name'])
+        #print(jsonify(result['Name']))
+        x = result.to_dict()
+        print(x)
+        print(type(x))
+
+    print(type(x['Name']))
+    print(jsonify(x['Name']))
+    data = json.loads(x['Name'])
+    print(type(data['price']))
+    print(type(data['orders']))
+    print(type(data['orders'][0]))
+
+
+    return render_template('checkout.html', data=data)
 
 
 
