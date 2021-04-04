@@ -71,7 +71,7 @@ def logout():
 def management():
     data_list = []
     try:
-        orders = requests.request('GET', 'http://127.0.0.1:5002/order', json = None)
+        orders = requests.request('GET', 'http://localhost:8000/upcoming_orders', json = None)
         order_status = orders.status_code
         if(order_status == 200):
             order_data = orders.json()
@@ -80,7 +80,7 @@ def management():
 
         data_list.append(order_data)
 
-        fishes = requests.request('GET', 'http://127.0.0.1:5000/fish', json = None)
+        fishes = requests.request('GET', 'http://localhost:8000/fish', json = None)
         fishes_status = fishes.status_code
         if(fishes_status == 200):
             fish_data = fishes.json()
@@ -89,7 +89,7 @@ def management():
 
         data_list.append(fish_data)
 
-        promotions = requests.request('GET', 'http://127.0.0.1:5004/promotion', json = None)
+        promotions = requests.request('GET', 'http://localhost:8000/promotion', json = None)
         promotions_status = promotions.status_code
         if(promotions_status == 200):
             p_data = promotions.json()
