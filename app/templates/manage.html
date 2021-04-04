@@ -106,9 +106,10 @@
             )
         }
 
-        axios.put("http://127.0.0.1:8000/fish/add", stockJson).then((response) => {
+        axios.put(`http://localhost:5000/fish/add`, stockJson).then((response) => {
             if (response.status > 199 && response.status < 300) {
                 alert("Stocks successfully added!")
+                location.reload()
               } else {
                 alert("Unsuccessful!")
               }
