@@ -65,7 +65,7 @@ def manage_payment():
 def process_payment(order_info):
 
     #Update fish quantity
-    fish_result = invoke_http(fish_URL, method = 'PUT', json = order_info['order_items'])
+    fish_result = invoke_http(fish_URL + "/deduct", method = 'PUT', json = order_info['order_items'])
     code = fish_result['code']
     print(fish_result)
     #Error in updating fish qty

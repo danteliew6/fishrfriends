@@ -123,8 +123,8 @@ def find_by_fish_id(fish_id):
 #     ), 201
 
 
-@app.route("/fish", methods=['PUT'])
-def update_fish():
+@app.route("/fish/deduct", methods=['PUT'])
+def deduct_fish_stock():
     data = request.get_json()
 
     for fish_item in data:
@@ -158,7 +158,40 @@ def update_fish():
     }
     ), 200
 
+@app.route("/fish/add", methods=['PUT'])
+def add_fish_stock():
+    data = request.get_json()
 
+    for fish_item in data:
+ 
+        try:
+            fish = Fish.query.filter_by(fish_id=fish_item['fish_id']).first()        
+        except Exception as e:
+            return jsonify(
+            {
+                "code": 404,
+                "message": "Fish not found."
+            }
+            ), 404
+
+        if fish_item['quantity']:
+            fish.stock_qty = fish.stock_qty + int(fish_item['quantity'])
+        else:
+            return jsonify(
+            {
+                "code": 500,
+                "fish_id" : fish_item['fish_id'],
+                "message": "quantity to deduct not specified."
+            }
+            ), 500
+
+    db.session.commit()
+    return jsonify(
+    {
+        "code": 200,
+        "data": data
+    }
+    ), 200
 
 
 
