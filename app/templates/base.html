@@ -5,6 +5,7 @@
     <head>
         <meta charset="utf-8" />
         <meta name ="viewport" content="width=device-width initial-scale=1" />
+        <script src="../static/userAuth.js"></script>
         <meta name="google-signin-client_id"
     content="1085787602715-efthg533porv8g4l3p2p912gra4eea5g.apps.googleusercontent.com">
         <!-- Bootstrap CSS -->
@@ -16,10 +17,14 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
         <script src="https://apis.google.com/js/platform.js?onload=onLoadCallback" defer></script>
 
+        
+
         <title>{% block title %} Home {% endblock %}</title>
 
     </head>
-    <body>
+
+    <body onload= "login_check();"> <!--onload="login_check();"-->
+        
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <!--
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar">
@@ -101,6 +106,7 @@
 
             function signOut() {
                 var auth2 = gapi.auth2.getAuthInstance();
+                sessionStorage.setItem('login_status', 'unsuccessful');
                 auth2.signOut().then(function () {
                     console.log('User signed out.');
                     
@@ -108,5 +114,14 @@
                 });
                 console.log("logout got problem")
             }
+
+            function login_check() {              
+                let status = sessionStorage.getItem('login_status');
+                console.log(status);
+                if (status != 'successful'){
+                    location.replace("/")
+                }
+            }
+
         </script>
 </html>
