@@ -36,8 +36,8 @@
             Ordered this fishes:
             <br>
             {%for fishes_details in content.order_items%}
-            <span class="font-weight-bold">{{fishname_list[fishes_details.fish_id]}} </span>
             <span class="font-weight-bold">Quantity: {{fishes_details.quantity}} </span>
+            <span class="font-weight-bold">{{fishname_list[fishes_details.fish_id]}} </span>
             <br>
             {%endfor%}
         </td>
