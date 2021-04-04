@@ -51,14 +51,14 @@
 <div id="allfishes" class="card-deck" style="margin-top: 80px;">
     {%for fish in fishes%}
     {% if fish['stock_qty'] > 0 %}
-    {% set name = 'images/' + fish['fishname'] + '.png' %}
+    {% set name = 'images/' + fish['fish_id'] + '.png' %}
     {% set countid = fish['fish_id'] %}
     
     <div class="card cardshadow border-light onefish m-3">
         <p hidden class="fishid">{{fish['fish_id']}}</p>
       <img class="card-img-top" src={{ url_for('static', filename = name) }} alt="Card image cap">
       <div class="card-body">
-        <h5 class="card-title">{{fish['fishname']}}</h5>
+        <h5 class="card-title">{{fish['fish_id']}}</h5>
         <p class="card-text">
             <span style="font-style: italic">{{fish['description']}} </span>
             </br>
@@ -150,7 +150,7 @@
         var total = 0;
         for( i = 0; i < priceList.length ; i++){
             var string = {};
-            string['fish_id'] = "" + parseInt(fishList[i].innerHTML)  ;
+            string['fish_id'] = fishList[i].innerHTML;
             string['quantity'] = "" + parseInt(countList[i].innerHTML);
             string['price'] = "" + parseInt(priceList[i].innerHTML);           
             total += parseInt(countList[i].innerHTML) * parseFloat(priceList[i].innerHTML);

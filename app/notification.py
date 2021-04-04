@@ -41,7 +41,7 @@ def processOrderLog(order):
 
     order_items = ""
     for item in order['order_items']:
-        order_items += "<tr><td>Fish " + str(item['fish_id']) + "</td><td>" + str(item['quantity']) + "</td></tr>"
+        order_items += "<tr><td>" + item['fish_id'] + "</td><td>" + str(item['quantity']) + "</td></tr>"
 
     html = """\
     <html>

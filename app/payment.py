@@ -19,7 +19,7 @@ monitorBindingKey='payment.log'
 class Payment(db.Model):
     __tablename__ = 'payment'
 
-    username = db.Column(db.String(30), nullable = False, primary_key = True)
+    username = db.Column(db.String(100), nullable = False, primary_key = True)
     amount = db.Column(db.Integer, nullable = False)
     fish_order_id = db.Column(db.Integer, nullable = False, primary_key = True)
     datetime = db.Column(db.DateTime, nullable = True, default=func.now())

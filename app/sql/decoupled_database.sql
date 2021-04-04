@@ -2,25 +2,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+08:00";
 
 
-drop schema if exists USER;
-CREATE SCHEMA USER;
-USE USER;
-
--- --------------------------------------------------------
-
---
--- Table structure for table "user"
---
-
-DROP TABLE IF EXISTS user;
-CREATE TABLE IF NOT EXISTS user (
-  username varchar(30) NOT NULL,
-  name varchar(30) NOT NULL,
-  password varchar(100) NOT NULL,
-  email varchar(30) NOT NULL,
-  CONSTRAINT user_pk PRIMARY KEY (username)
-)ENGINE=InnoDB DEFAULT CHARSET=utf8; 
-
 
 drop schema if exists PAYMENT;
 CREATE SCHEMA PAYMENT;
@@ -32,7 +13,7 @@ USE PAYMENT;
 
 DROP TABLE IF EXISTS payment;
 CREATE TABLE payment (
-  username varchar(30) NOT NULL,
+  username varchar(100) NOT NULL,
   amount int NOT NULL,
   fish_order_id int NOT NULL,
   datetime TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -52,8 +33,7 @@ USE FISH;
 
 DROP TABLE IF EXISTS fish;
 CREATE TABLE fish (
-  fish_id int NOT NULL AUTO_INCREMENT,
-  fishname varchar(30) NOT NULL,
+  fish_id varchar(30) NOT NULL,
   price float NOT NULL,
   stock_qty int NOT NULL CHECK (stock_qty >= 0),
   description varchar(100) NOT NULL,
@@ -84,7 +64,7 @@ CREATE TABLE fish_order (
 DROP TABLE IF EXISTS fish_order_item;
 
 CREATE TABLE fish_order_item (
-  fish_id int NOT NULL,
+  fish_id varchar(30) NOT NULL,
   fish_order_id int NOT NULL,
   quantity int NOT NULL,
   price float NOT NULL,

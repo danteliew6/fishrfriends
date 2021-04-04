@@ -23,14 +23,13 @@ CORS(app)
 class Fish(db.Model):
     __tablename__ = 'fish'
 
-    fish_id = db.Column(db.Integer, primary_key=True)
-    fishname = db.Column(db.String(64), nullable=False)
+    fish_id = db.Column(db.String(64), primary_key = True)
     price = db.Column(db.Float, nullable=False)
     stock_qty = db.Column(db.Integer)
     description = db.Column(db.String(64), nullable=False)
 
-    def __init__(self, fishname, price, stock_qty, description):
-        self.fishname = fishname
+    def __init__(self, fish_id, price, stock_qty, description):
+        self.fish_id = fish_id
         self.price = price
         self.stock_qty = stock_qty
         self.description = description
@@ -38,7 +37,6 @@ class Fish(db.Model):
     def json(self):
         return {
             "fish_id": self.fish_id, 
-            "fishname": self.fishname,
             "price": self.price, 
             "stock_qty": self.stock_qty, 
             "description": self.description
@@ -81,46 +79,6 @@ def find_by_fish_id(fish_id):
             "message": "Fish not found."
         }
     ), 404
-
-
-
-# No need to add fish
-# @app.route("/fish/<string:fish_id>", methods=['POST'])
-# def create_fish(fish_id):
-#     if (Fish.query.filter_by(fish_id=fish_id).first()):
-#         return jsonify(
-#             {
-#                 "code": 400,
-#                 "data": {
-#                     "fish_id": fish_id
-#                 },
-#                 "message": "Fish already exists."
-#             }
-#         ), 400
-
-#     data = request.get_json()
-#     fish = Fish(fish_id, **data)
-
-#     try:
-#         db.session.add(fish)
-#         db.session.commit()
-#     except:
-#         return jsonify(
-#             {
-#                 "code": 500,
-#                 "data": {
-#                     "fish_id": fish_id
-#                 },
-#                 "message": "An error occurred creating the fish."
-#             }
-#         ), 500
-
-#     return jsonify(
-#         {
-#             "code": 201,
-#             "data": fish.json()
-#         }
-#     ), 201
 
 
 @app.route("/fish/deduct", methods=['PUT'])
@@ -194,31 +152,6 @@ def add_fish_stock():
     ), 200
 
 
-
-#No need to delete fish
-# @app.route("/fish/<string:fish_id>", methods=['DELETE'])
-# def delete_fish(fish_id):
-#     fish = Fish.query.filter_by(fish_id=fish_id).first()
-#     if fish:
-#         db.session.delete(fish)
-#         db.session.commit()
-#         return jsonify(
-#             {
-#                 "code": 200,
-#                 "data": {
-#                     "fish_id": fish_id
-#                 }
-#             }
-#         )
-#     return jsonify(
-#         {
-#             "code": 404,
-#             "data": {
-#                 "fish_id": fish_id
-#             },
-#             "message": "Fish not found."
-#         }
-#     ), 404
 
 
 if __name__ == '__main__':

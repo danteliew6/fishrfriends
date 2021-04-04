@@ -14,7 +14,7 @@
 
 {%set fishname_list =[]%}
 {% for content in fishes['data']['fishes'] %}
-    {% do fishname_list.append(content.fishname) %}
+    {% do fishname_list.append(content.fish_id) %}
 {% endfor %}
 <h1 class="text-center">At A Glance</h1>
 <table aria-describedby="Order-Table" class="table table-striped table-hover text-center m-5">
@@ -33,11 +33,8 @@
         <th scope="row">{{content.fish_order_id}}</th>
         <td>{{content.amount}}</td>
         <td>
-            Ordered this fishes:
-            <br>
             {%for fishes_details in content.order_items%}
-            <span class="font-weight-bold">Quantity: {{fishes_details.quantity}} </span>
-            <span class="font-weight-bold">{{fishname_list[fishes_details.fish_id]}} </span>
+            <span class="font-weight-bold">{{fishes_details['fish_id']}} - {{fishes_details.quantity}} units </span>
             <br>
             {%endfor%}
         </td>
@@ -62,7 +59,7 @@
     {% for content in fishes['data']['fishes'] %}
     <tr>
         <th scope="row" class = "fishId">{{content.fish_id}}</th>
-        <td>{{content.fishname}}</td>
+        <td>{{content.fish_id}}</td>
         <td>${{content.price}}</td>
         <td>{{content.stock_qty}}</td>
         <td><input type ="number" class = "addFishStock" value ='0'></td>
@@ -108,13 +105,7 @@
             )
         }
 
-<<<<<<< Updated upstream
         axios.put(`http://localhost:5000/fish/add`, stockJson).then((response) => {
-=======
-        console.log(stockJson);
-        console.log(typeof(stockJson))
-        axios.put("http://localhost:5000/fish/add", [{"fish_id" : 1,"quantity" : 2}]).then((response) => {
->>>>>>> Stashed changes
             if (response.status > 199 && response.status < 300) {
                 alert("Stocks successfully added!")
                 location.reload()
