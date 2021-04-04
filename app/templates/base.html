@@ -118,6 +118,8 @@
             function login_check() {              
                 let status = sessionStorage.getItem('login_status');
                 console.log(status);
+                let name = sessionStorage.getItem('name');
+                console.log(name);
                 if (status != 'successful'){
                     location.replace("/")
                 }
