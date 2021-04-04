@@ -29,16 +29,33 @@ def home():
 
     return render_template("home.html", fishes = data['data']['fishes'], datacode = data['code'])
 
-@app.route('/checkout', methods=['POST'])
+@app.route('/checkout', methods=['GET','POST'])
 def paypal():
     result = 0
-    if request.method == 'POST':
-        result = request.form
-        x = result.to_dict()
+    data= None
+    p_data='Tester'
+    discount = 0;
 
+    def try_code(code):
+        promotions = requests.request('GET', 'http://127.0.0.1:5004/promotion/'+code, json = None)
+        promotions_status = promotions.status_code
+        if(promotions_status == 200):
+            p_data = promotions.json()
+        else:
+            p_data =None
+        return p_data
+
+    form_data = request.values.get("promotion_code")
+    if(form_data != None):
+        p_data = try_code(form_data)
+        if p_data != None:
+            discount = p_data['data']['discount']
+
+    result = request.form
+    x = result.to_dict()
     data = json.loads(x['Name'])
-
-    return render_template('checkout.html', data=data)
+    
+    return render_template('checkout.html', data=data, p_data =p_data , form_data = form_data ,discount = discount)
 
 @app.route('/login', methods=['GET','POST'])
 def login():
