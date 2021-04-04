@@ -145,9 +145,9 @@ def promo_mod():
     return render_template("promo.html", p_data=p_data)
 
 
-@app.route('/confrim', methods=['GET','POST'])
-def confrimation():
-    return render_template("confrim.html")
+@app.route('/confirm', methods=['GET','POST'])
+def confirmation():
+    return render_template("confirm.html")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555,debug=True)

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %} confrim {% endblock %}
+{%block content%} 
+
+<h1> This is the confrim page </h1> 
+<h2 id = "collection_datetime">Collection Date and Time: </h2>
+
+<table id="orderTable">
+    <tr><th>Item</th><th>Quantity</th></tr>
+</table>
+
+
+<script>
+    document.getElementById("collection_datetime").innerHTML += sessionStorage.getItem("collection_datetime")
+    for (item of sessionStorage.getItem("order_items")) {
+        document.getElementById("orderTable").innerHTML += 
+        "<tr><td>" + item['fish_id'] + "</td>" + "<td>" + item['quantity'] + "</td></tr>"
+    }
+    
+</script>
+{%endblock%}

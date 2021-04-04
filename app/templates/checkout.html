@@ -87,10 +87,6 @@
   <button type ="button" class="btn btn-primary btn-block" id = "click" onclick="getPromo()"> Submit Promo </button>
   </div>
 </div>
-<<<<<<< Updated upstream
-
-=======
->>>>>>> Stashed changes
 
 <br>
 </div>
@@ -131,6 +127,7 @@
         managePayment({{data|safe}})
         alert('Transaction completed by ' + details.payer.name.given_name);
 
+        window.location.replace("/confirm");
       });
     }
   }).render('#paypal-button-container'); // Display payment options on your web page
@@ -138,9 +135,15 @@
   function managePayment(data) {
     const url = `http://localhost:5005/payment_manage`;
     var dateAndTime = collection_datetime.value.split('T');
+    var order_items = []
+    for (item of data['orders']) {
+      if (item['quantity'] != 0) {
+        order_items.push(item);
+      }
+    }
     var payment_manage_json = {
       "amount" : data["price"],
-      "order_items" : data["orders"],
+      "order_items" : order_items,
       "collection_datetime" : dateAndTime[0] + " " + dateAndTime[1],
       "username" : sessionStorage.getItem("email")
     }
@@ -148,7 +151,10 @@
     axios.post(url,payment_manage_json)
     .then((response) => {
       console.log(response);
-        window.location.replace("/confrim");
+      sessionStorage.setItem("amount",Math.round(final_final*100)/100)
+      sessionStorage.setItem("order_items", order_items)
+      sessionStorage.setItem("collection_datetime",payment_manage_json["collection_datetime"])
+      
     })
     .catch(function (error){
       console.log(error.response);
@@ -187,7 +193,6 @@
     });
   }
 
-<<<<<<< Updated upstream
   var node = document.getElementById("promotion_code");
   node.addEventListener("keyup", function(event){
     if (event.keyCode===13) {
@@ -196,9 +201,6 @@
   }
   });
  
-=======
-
->>>>>>> Stashed changes
 </script>
 
 
