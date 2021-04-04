@@ -54,7 +54,7 @@
     {% set name = 'images/' + fish['fishname'] + '.png' %}
     {% set countid = fish['fish_id'] %}
     
-    <div class="card cardshadow border-light onefish">
+    <div class="card cardshadow border-light onefish m-3">
         <p hidden class="fishid">{{fish['fish_id']}}</p>
       <img class="card-img-top" src={{ url_for('static', filename = name) }} alt="Card image cap">
       <div class="card-body">
