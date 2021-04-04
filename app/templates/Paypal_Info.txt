@@ -5,3 +5,10 @@ Password: VgQl!$4"
 Seller/ Owner:
 Email: sb-fee4w5537788@business.example.com
 Password: Z]zH7!fp
+
+Generated Credit Card Details
+Card Type: Visa
+Card Number: 4032036480609526
+Expiration Date: 06/2024
+CVV: 327
+
