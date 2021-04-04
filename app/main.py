@@ -14,6 +14,7 @@ DB_NAME = "database.db"
 
 app = Flask(__name__)
 app.jinja_env.add_extension('jinja2.ext.do')
+app.config['SECRET_KEY'] = 'WELCOMETOFISHCYCLE'
 CORS(app, resources=r'http://0.0.0.1/fish/put', headers='Content-Type')
 
 
@@ -108,39 +109,36 @@ def management():
 
 @app.route('/promomod', methods=['GET','POST'])
 def promo_mod():
-    p_data = ''
     def generate():
         promotions = requests.request('GET', 'http://127.0.0.1:8000/promotion', json = None)
         promotions_status = promotions.status_code
         if(promotions_status >= 200 and promotions_status <= 300):
-            p_data = promotions.json()
+            p_data = promotions.json();
+            return p_data;
         else:
             p_data =None
-        return p_data
+            return p_data;
 
-    try:
+    p_data = generate()
+    del_data=request.form.get("delete_promo")
+    promo_data = request.form.get("promotion_code")
+    dis_data = request.form.get("discount")
+
+    if(del_data != None):
+        return_del_data = requests.delete('http://127.0.0.1:8000/promotion/'+ str(del_data))
         p_data = generate()
-        del_data=request.form.get("delete_promo")
-        promo_data = request.form.get("promotion_code")
-        dis_data = request.form.get("discount")
+        flash("Promo Code has been deleted", category='success')
+        return render_template("promo.html", p_data=p_data)
 
-        if(del_data != None):
-            return_del_data = requests.delete('http://127.0.0.1:8000/promotion/'+ str(del_data))
+    if(promo_data != None):
+        send_data ={'promotion_code':promo_data,'discount': dis_data}
+        return_send = requests.post('http://127.0.0.1:8000/promotion', json = send_data)
+        if(return_send.status_code == 201):
+            flash("Promo Code has been added", category='success')
             p_data = generate()
             return render_template("promo.html", p_data=p_data)
-
-        if(promo_data != None):
-            send_data ={'promotion_code':promo_data,'discount': dis_data}
-            return_send = requests.post('http://127.0.0.1:8000/promotion', json = send_data)
-            if(return_send.status_code == 201):
-                flash("Promo Code has been added", category='success')
-                p_data = generate()
-                return render_template("promo.html", p_data=p_data)
-            else:
-                flash("Promo Code has been added before", category='error')
-    except:
-
-        p_data = None
+        else:
+            flash("Promo Code has been added before", category='error')
 
     return render_template("promo.html", p_data=p_data)
 
