@@ -152,7 +152,7 @@
     .then((response) => {
       console.log(response);
       sessionStorage.setItem("amount",Math.round(final_final*100)/100)
-      sessionStorage.setItem("order_items", order_items)
+      sessionStorage.setItem("order_items", JSON.stringify(order_items))
       sessionStorage.setItem("collection_datetime",payment_manage_json["collection_datetime"])
       
     })

@@ -1,21 +1,35 @@
 {% extends "base.html" %}
-{% block title %} confrim {% endblock %}
+{% block title %} Order Confirmation {% endblock %}
 {%block content%} 
+<div class="container m-3">
+    <h1 class ="text-center">Thank you for shopping with FishRFriends!</h1> <br>
+    <br>
+    <h2>These are your order details:</h2>
+    <table  class = "table table-striped">
+        <thead>
+            <tr><th>Item</th><th>Quantity</th></tr>
+        </thead>
+        <tbody id="orderTable">
 
-<h1> This is the confrim page </h1> 
-<h2 id = "collection_datetime">Collection Date and Time: </h2>
+        </tbody>
+    </table>
+    <h4 class = "mt-4 mb-4" id = "collection_datetime">Collection Date and Time: </h4>
 
-<table id="orderTable">
-    <tr><th>Item</th><th>Quantity</th></tr>
-</table>
+    <h5>
+        You will receive an email from us shortly. <br>Please show us your order confirmation email, or quote your email when collecting your fishes!
+    </h5>
+
+</div>
+
 
 
 <script>
+
     document.getElementById("collection_datetime").innerHTML += sessionStorage.getItem("collection_datetime")
-    for (item of sessionStorage.getItem("order_items")) {
+    for (item of JSON.parse(sessionStorage.getItem("order_items"))) {
         document.getElementById("orderTable").innerHTML += 
         "<tr><td>" + item['fish_id'] + "</td>" + "<td>" + item['quantity'] + "</td></tr>"
     }
-    
+    document.getElementById("orderTable").innerHTML += "<tr><th><u>Total Amount:</u></th><th><u>$" + sessionStorage.getItem("amount") + "</u></th></tr>"
 </script>
 {%endblock%}
