@@ -2,6 +2,7 @@
 {% block title %} Home {% endblock %}
 {%block content%} 
 
+
 <style>
     p1 {text-align: center;
     }
@@ -37,7 +38,7 @@
 
 
 <div>
-    <h1 class="containercenter">Welcome to FISH 'R' FRIENDS!</h1>
+    <h1 class="containercenter" id = "welcome"></h1>
 </div>
 
 <!-- If there is fish, will run page -->
@@ -122,6 +123,8 @@
 {%endif%}
 
 <script>
+    username = sessionStorage.getItem("name");
+    document.getElementById("welcome").innerHTML = "Hello " + username + ", welcome to Fish R Friends!";
 
     function calculate(){
 
