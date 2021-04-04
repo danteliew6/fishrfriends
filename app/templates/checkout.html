@@ -71,7 +71,7 @@
     </div>
 </div>
 
-<form method="">
+
   <h5 id = "add_new">Enter your promo code</h5>
   <div class = 'row'>
   <div class =" col-9 form-group ">
@@ -81,13 +81,13 @@
           id="promotion_code"
           name="promotion_code"
           placeholder="Enter code"
-      />
+      >
   </div>
   <div class =" col-3 d-flex justify-content-center">
   <button type ="button" class="btn btn-primary btn-block" id = "click" onclick="getPromo()"> Submit Promo </button>
   </div>
 </div>
-</form>
+
 
 <br>
 </div>
@@ -183,6 +183,15 @@
       // always executed
     });
   }
+
+  var node = document.getElementById("promotion_code");
+  node.addEventListener("keyup", function(event){
+    if (event.keyCode===13) {
+      event.preventDefault();
+      document.getElementById("click").click();
+  }
+  });
+ 
 </script>
 
 
