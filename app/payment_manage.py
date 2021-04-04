@@ -36,11 +36,17 @@ def manage_payment():
             result = process_payment(order_info)
 
             if result['code'] in range (200, 300):
+                    payment_json = {
+                    "amount" : result['data']['order_info']['amount'],
+                    "username" : result['data']['order_info']['username'],
+                    "fish_order_id" : result['data']['order_info']['fish_order_id']
+                    }
+                    payment_json = json.dumps(payment_json)
                     order_info['fish_order_id'] = result['data']['order_info']['fish_order_id']
                     amqp_setup.check_setup()
                     message = json.dumps(order_info)
                     amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="confirmed.orders", body=message, properties=pika.BasicProperties(delivery_mode = 2)) 
-
+                    amqp_setup.channel.basic_publish(exchange=amqp_setup.exchangename, routing_key="payment.log", body=payment_json, properties=pika.BasicProperties(delivery_mode = 2)) 
             return jsonify(result), result['code']
 
         except Exception as e:
@@ -91,22 +97,22 @@ def process_payment(order_info):
         } 
 
 
-    # Add successful payment to payment microservice
-    payment_json = {
-        "amount" : order_info['amount'],
-        "username" : order_info['username'],
-        "fish_order_id" : fish_order_result['data']['fish_order_id']
-    }
+    # # Add successful payment to payment microservice
+    # payment_json = {
+    #     "amount" : order_info['amount'],
+    #     "username" : order_info['username'],
+    #     "fish_order_id" : fish_order_result['data']['fish_order_id']
+    # }
    
-    payment_result = invoke_http(payment_URL, method = 'POST', json = payment_json)
+    # payment_result = invoke_http(payment_URL, method = 'POST', json = payment_json)
 
 
-    if payment_result['code'] not in range(200, 300):
-        return {
-            "code": 503,
-            "data" : payment_json,
-            "message": "Unsuccessful payment!"
-        }      
+    # if payment_result['code'] not in range(200, 300):
+    #     return {
+    #         "code": 503,
+    #         "data" : payment_json,
+    #         "message": "Unsuccessful payment!"
+    #     }      
 
     order_info['fish_order_id'] = fish_order_result['data']['fish_order_id']
 

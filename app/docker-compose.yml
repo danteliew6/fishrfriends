@@ -18,8 +18,8 @@ services:
     build:
       context: ./
       dockerfile: fish.Dockerfile
-    #image: danteliew6/fish:1.0
-    image: jaredng24/fish:1.0
+    image: danteliew6/fish:1.0
+    # image: jaredng24/fish:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/fish
@@ -36,8 +36,8 @@ services:
     build:
       context: ./
       dockerfile: promotion.Dockerfile
-    #image: danteliew6/promotion:1.0
-    image: jaredng24/promotion:1.0
+    image: danteliew6/promotion:1.0
+    # image: jaredng24/promotion:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/promotion
@@ -52,8 +52,8 @@ services:
     build:
       context: ./
       dockerfile: order.Dockerfile
-    #image: danteliew6/order:1.0
-    image: jaredng24/order:1.0
+    image: danteliew6/order:1.0
+    # image: jaredng24/order:1.0
     restart: always
     environment:
       dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/fish_order
@@ -63,31 +63,14 @@ services:
 
 
   #######################################################
-  # Payment: The Payment microservice
-  #######################################################
-  payment:
-    build:
-      context: ./
-      dockerfile: payment.Dockerfile
-    #image: danteliew6/payment:1.0
-    image: jaredng24/payment:1.0
-    restart: always
-    environment:
-      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/payment
-      PYTHONUNBUFFERED: 1
-    ports:
-      - "5003:5003"
-
-
-  #######################################################
   # Payment_manage: The Payment Manage microservice
   #######################################################
   payment_manage:
     build:
       context: ./
       dockerfile: payment_manage.Dockerfile
-    #image: danteliew6/payment_manage:1.0
-    image: jaredng24/payment_manage:1.0
+    image: danteliew6/payment_manage:1.0
+    # image: jaredng24/payment_manage:1.0
     restart: always
     depends_on:
       - promotion
@@ -126,8 +109,8 @@ services:
     build:
       context: ./
       dockerfile: notification.Dockerfile
-    #image: danteliew6/notification:1.0
-    image: jaredng24/notification:1.0
+    image: danteliew6/notification:1.0
+    # image: jaredng24/notification:1.0
     restart: always
     depends_on:
       - rabbitmq
@@ -135,6 +118,28 @@ services:
       rabbit_host: rabbitmq
       rabbit_port: 5672
       PYTHONUNBUFFERED: 1
+
+  #######################################################
+  # Payment: The Payment microservice
+  #######################################################
+  payment:
+    build:
+      context: ./
+      dockerfile: payment.Dockerfile
+    image: danteliew6/payment:1.0
+    # image: jaredng24/payment:1.0
+    restart: always
+    depends_on:
+      - rabbitmq
+    environment:
+      rabbit_host: rabbitmq
+      rabbit_port: 5672
+      dbURL: mysql+mysqlconnector://is213@host.docker.internal:3306/payment
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "5003:5003"
+
+
 
   #######################################################
   # main

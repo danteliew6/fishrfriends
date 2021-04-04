@@ -3,7 +3,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from sqlalchemy.sql import func
 from os import environ
-
+import amqp_setup
+import json
 
 #Payment Microservice
 
@@ -14,7 +15,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 CORS(app)  
-
+monitorBindingKey='payment.log'
 class Payment(db.Model):
     __tablename__ = 'payment'
 
@@ -92,33 +93,62 @@ def find_payments_by_order_id(fish_order_id):
 
 
 
-@app.route("/payment", methods=['POST'])
-def add_payment():
-    data = request.get_json()
-    payment = Payment(**data)
+# @app.route("/payment", methods=['POST'])
+# def add_payment():
+#     data = request.get_json()
+#     payment = Payment(**data)
+
+#     try:
+#         db.session.add(payment)
+#         db.session.commit()
+#     except:
+#         return jsonify(
+#             {
+#                 "code": 500,
+#                 "message": "An error occurred when adding the payment."
+#             }
+#         ), 500
+
+#     return jsonify(
+#         {
+#             "code": 201,
+#             "data": payment.json()
+#         }
+#     ), 201
+
+
+
+
+def receivePaymentLog():
+    amqp_setup.check_setup()
+        
+    queue_name = 'Payment_Log' 
+    
+    # set up a consumer and start to wait for coming messages
+    amqp_setup.channel.basic_consume(queue=queue_name, on_message_callback=callback, auto_ack=True)
+    amqp_setup.channel.start_consuming() # an implicit loop waiting to receive messages; 
+    #it doesn't exit by default. Use Ctrl+C in the command window to terminate it.
+
+def callback(channel, method, properties, body): # required signature for the callback; no return
+    print("\nReceived an order log by " + __file__)
+    processPaymentLog(json.loads(body))
+    print() # print a new line feed
+
+def processPaymentLog(payment):
+    print("logging payment transaction....")
+    payment_data = Payment(**payment)
 
     try:
-        db.session.add(payment)
+        db.session.add(payment_data)
         db.session.commit()
     except:
-        return jsonify(
-            {
-                "code": 500,
-                "message": "An error occurred when adding the payment."
-            }
-        ), 500
+        print("error committing payment log to database")
 
-    return jsonify(
-        {
-            "code": 201,
-            "data": payment.json()
-        }
-    ), 201
-
-
-
-
+  
 
 if __name__ == '__main__':
+    print(": monitoring routing key '{}' in exchange '{}' ...".format(monitorBindingKey, amqp_setup.exchangename))
+    receivePaymentLog()
     app.run(host='0.0.0.0', port=5003, debug=True)
+    
     

@@ -39,7 +39,17 @@ channel.queue_declare(queue=queue_name, durable=True)
 channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='confirmed.orders') 
     # bind the queue to the exchange via the key
     # 'routing_key=#' => any routing_key would be matched
-    
+
+############   Payment_Log queue    #############
+#delcare Payment_Log queue
+queue_name = 'Payment_Log' 
+channel.queue_declare(queue=queue_name, durable=True)
+    # 'durable' makes the queue survive broker restarts
+
+#bind Payment_Log queue
+channel.queue_bind(exchange=exchangename, queue=queue_name, routing_key='payment.log') 
+    # bind the queue to the exchange via the key
+    # 'routing_key=#' => any routing_key would be matched
 
 """
 This function in this module sets up a connection and a channel to a local AMQP broker,
