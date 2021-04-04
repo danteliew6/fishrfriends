@@ -80,13 +80,15 @@ def management():
             p_data =None
         
         data_list.append(p_data)
+
     except:
         data_list=['hello', {}, None]
 
-    return render_template("manage2.html", data_list =data_list)
+    return render_template("manage.html", data_list =data_list)
 
 @app.route('/promomod', methods=['GET','POST'])
 def promo_mod():
+    p_data = '';
     def generate():
         promotions = requests.request('GET', 'http://127.0.0.1:5004/promotion', json = None)
         promotions_status = promotions.status_code
@@ -96,25 +98,29 @@ def promo_mod():
             p_data =None
         return p_data
 
-    p_data = generate()
-    del_data=request.form.get("delete_promo")
-    promo_data = request.form.get("promotion_code")
-    dis_data = request.form.get("discount")
-
-    if(del_data != None):
-        return_del_data = requests.delete('http://127.0.0.1:5004/promotion/'+ str(del_data))
+    try:
         p_data = generate()
-        return render_template("promo.html", p_data=p_data)
+        del_data=request.form.get("delete_promo")
+        promo_data = request.form.get("promotion_code")
+        dis_data = request.form.get("discount")
 
-    if(promo_data != None):
-        send_data ={'promotion_code':promo_data,'discount': dis_data}
-        return_send = requests.post('http://127.0.0.1:5004/promotion', json = send_data)
-        if(return_send.status_code == 201):
-            flash("Promo Code has been added", category='success')
+        if(del_data != None):
+            return_del_data = requests.delete('http://127.0.0.1:5004/promotion/'+ str(del_data))
             p_data = generate()
             return render_template("promo.html", p_data=p_data)
-        else:
-            flash("Promo Code has been added before", category='error')
+
+        if(promo_data != None):
+            send_data ={'promotion_code':promo_data,'discount': dis_data}
+            return_send = requests.post('http://127.0.0.1:5004/promotion', json = send_data)
+            if(return_send.status_code == 201):
+                flash("Promo Code has been added", category='success')
+                p_data = generate()
+                return render_template("promo.html", p_data=p_data)
+            else:
+                flash("Promo Code has been added before", category='error')
+    except:
+
+        p_data = None
 
     return render_template("promo.html", p_data=p_data)
 
