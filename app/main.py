@@ -1,6 +1,7 @@
 #we just have to run this to render webpages
 from flask import Flask, Blueprint, render_template, jsonify, flash, jsonify, request
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS, cross_origin
 import requests
 import json
 
@@ -13,6 +14,8 @@ DB_NAME = "database.db"
 
 app = Flask(__name__)
 app.jinja_env.add_extension('jinja2.ext.do')
+CORS(app, resources=r'http://0.0.0.1/fish/put', headers='Content-Type')
+
 
 @app.route('/')
 def index():
@@ -67,7 +70,7 @@ def login():
 def logout():
     return "<p>Logout</p>"
 
-@app.route('/manage',methods=['GET'])
+@app.route('/manage',methods=['GET','PUT'])
 def management():
     data_list = []
     try:
@@ -140,6 +143,11 @@ def promo_mod():
         p_data = None
 
     return render_template("promo.html", p_data=p_data)
+
+
+@app.route('/confrim', methods=['GET','POST'])
+def confrimation():
+    return render_template("confrim.html")
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5555,debug=True)

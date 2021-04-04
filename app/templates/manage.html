@@ -108,14 +108,23 @@
             )
         }
 
+<<<<<<< Updated upstream
         axios.put(`http://localhost:5000/fish/add`, stockJson).then((response) => {
+=======
+        console.log(stockJson);
+        console.log(typeof(stockJson))
+        axios.put("http://localhost:5000/fish/add", [{"fish_id" : 1,"quantity" : 2}]).then((response) => {
+>>>>>>> Stashed changes
             if (response.status > 199 && response.status < 300) {
                 alert("Stocks successfully added!")
                 location.reload()
               } else {
                 alert("Unsuccessful!")
               }
-        })
+        }).catch(function (error) {
+            // handle error
+            console.log('fuck la cb')
+          })
 
     }
 

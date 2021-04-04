@@ -23,9 +23,9 @@
     {% for fishes in data['orders'] %}
     {% if fishes.quantity != '0' %}
     <tr>
-      <td>{{fishes.fish_id}}</td>
-      <td>{{fishes.quantity}}</td>
-      <td>${{fishes.price}}</td>
+      <td class="fishid">{{fishes.fish_id}}</td>
+      <td class="quantity">{{fishes.quantity}}</td>
+      <td class="price">{{fishes.price}}</td>
     </tr>
     {% endif %}
     {% endfor %}
@@ -87,7 +87,10 @@
   <button type ="button" class="btn btn-primary btn-block" id = "click" onclick="getPromo()"> Submit Promo </button>
   </div>
 </div>
+<<<<<<< Updated upstream
 
+=======
+>>>>>>> Stashed changes
 
 <br>
 </div>
@@ -118,7 +121,7 @@
       return actions.order.create({
         purchase_units: [{
           amount: {
-            value: final_final
+            value: Math.round(final_final*100)/100
           }
         }]
       });
@@ -144,11 +147,11 @@
     console.log(payment_manage_json);
     axios.post(url,payment_manage_json)
     .then((response) => {
-      if (response.status > 199 && response.status < 300) {
-        window.location.replace("/home");
-      } else {
-        console.log("problem with checkout!")
-      }
+      console.log(response);
+        window.location.replace("/confrim");
+    })
+    .catch(function (error){
+      console.log(error.response);
     })
    
   }
@@ -184,6 +187,7 @@
     });
   }
 
+<<<<<<< Updated upstream
   var node = document.getElementById("promotion_code");
   node.addEventListener("keyup", function(event){
     if (event.keyCode===13) {
@@ -192,6 +196,9 @@
   }
   });
  
+=======
+
+>>>>>>> Stashed changes
 </script>
 
 
