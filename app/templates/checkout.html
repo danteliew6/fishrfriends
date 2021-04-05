@@ -142,7 +142,7 @@
       }
     }
     var payment_manage_json = {
-      "amount" : data["price"],
+      "amount" : Math.round(final_final*100)/100,
       "order_items" : order_items,
       "collection_datetime" : dateAndTime[0] + " " + dateAndTime[1],
       "username" : sessionStorage.getItem("email")

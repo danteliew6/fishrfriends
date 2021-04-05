@@ -29,13 +29,11 @@ class FishOrder(db.Model):
     __tablename__ = 'fish_order'
 
     fish_order_id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    # payment_id = db.Column(db.Integer, nullable=False)
     amount = db.Column(db.Float, nullable=False)
     username = db.Column(db.String(100), nullable=False)
     collection_datetime = db.Column(db.DateTime, nullable = False)
 
     def __init__(self, amount, username, collection_datetime):
-        # self.payment_id =  payment_id
         self.amount = amount
         self.username = username
         self.collection_datetime = collection_datetime
@@ -44,7 +42,6 @@ class FishOrder(db.Model):
 
         dto = {
             'fish_order_id': self.fish_order_id,
-            # 'payment_id': self.payment_id,
             'amount' : self.amount,
             'username' : self.username,
             'collection_datetime' : self.collection_datetime
