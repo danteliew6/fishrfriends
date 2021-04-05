@@ -171,7 +171,7 @@
       console.log(response.data);
       console.log(response.data['data']['discount']);
       document.getElementById("newPrice").innerHTML = "Discounted Amount: $";
-      document.getElementById("newPrice").innerHTML += (100 - response.data['data']['discount']) / 100 * oldPrice;
+      document.getElementById("newPrice").innerHTML += Math.round((100 - response.data['data']['discount']) / 100 * oldPrice);
       final_final = (100 - response.data['data']['discount']) / 100 * oldPrice;
       document.getElementById('newPrice').style.display = "block";
       document.getElementById("oldPrice").style.textDecoration = "line-through";
