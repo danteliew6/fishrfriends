@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "staff_base.html" %}
 {% block title %} Manage Promotions{% endblock %}
 {%block content%} 
 
@@ -48,6 +48,7 @@
     margin: 0px;
   }
 </style>
+<button type ="button" class="btn btn-primary ml-5 mt-4" onclick="goBack()"> &laquo Back to Staff Manage Page </button>
 
 <h1 class = "containercenter">Manage Promotions</h1>
 <hr class="my-4">
@@ -113,4 +114,8 @@ There was an error in generating the promotions
     <br>
     <button type ="submit" class="btn btn-primary" id = "submit"> Submit </button>
 </form>
+
+<script>
+  function goBack(){window.location.replace('/manage')}
+</script>
 {%endblock%}
