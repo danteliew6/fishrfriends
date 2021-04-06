@@ -59,7 +59,7 @@ def find_by_promotion_code(promotion_code):
         )
     return jsonify(
         {
-            "code": 500,
+            "code": 404,
             "message": "Invalid promotion code!"
         }
     ), 500
@@ -76,11 +76,11 @@ def create_promotion():
     except:
         return jsonify(
             {
-                "code": 500,
+                "code": 405,
                 "data": data,
                 "message": "An error occurred creating the promotion."
             }
-        ), 500
+        ), 405
 
     return jsonify(
         {
@@ -99,7 +99,7 @@ def update_promotion():
         db.session.commit()
         return jsonify(
             {
-                "code": 200,
+                "code": 201,
                 "data": promotion.json()
             }
         )
