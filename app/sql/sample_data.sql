@@ -9,16 +9,16 @@ insert into payment(username, amount, fish_order_id) VALUES ('tan',10,1);
 
 USE FISH;
 
-insert into fish(fishname, price, stock_qty,  description) VALUES ('salmon', 5, 100, 'everyones fav fish!');
-insert into fish(fishname, price, stock_qty, description) VALUES ('dory', 6, 100, 'finding dory!');
-insert into fish(fishname, price, stock_qty, description) VALUES ('nemo', 1, 100, 'clown!!');
-insert into fish(fishname, price, stock_qty, description) VALUES ('shark', 10, 100, 'fish not food!');
-insert into fish(fishname, price, stock_qty,  description) VALUES ('shrimp', 20, 100, 'Im actually allergic to shellfish');
-insert into fish(fishname, price, stock_qty, description) VALUES ('babyturtle', 60, 100, 'defensive attributes will be boosted');
-insert into fish(fishname, price, stock_qty, description) VALUES ('octopus', 10, 100, 'tentacles for ten tickles');
-insert into fish(fishname, price, stock_qty, description) VALUES ('whale', 1999, 30, 'Not quite sure how ya gonna eat this');
-insert into fish(fishname, price, stock_qty, description) VALUES ('puffer', 10, 100, 'tentacles for ten tickles');
-insert into fish(fishname, price, stock_qty, description) VALUES ('ariel', 1999999, 1, 'Not for your questionable antics');
+insert into fish(fish_id, price, stock_qty,  description) VALUES ('salmon', 5, 100, 'everyones fav fish!');
+insert into fish(fish_id, price, stock_qty, description) VALUES ('dory', 6, 100, 'finding dory!');
+insert into fish(fish_id, price, stock_qty, description) VALUES ('nemo', 1, 100, 'clown!!');
+insert into fish(fish_id, price, stock_qty, description) VALUES ('shark', 10, 100, 'fish not food!');
+insert into fish(fish_id, price, stock_qty,  description) VALUES ('shrimp', 20, 100, 'Im actually allergic to shellfish');
+insert into fish(fish_id, price, stock_qty, description) VALUES ('babyturtle', 60, 100, 'defensive attributes will be boosted');
+insert into fish(fish_id, price, stock_qty, description) VALUES ('octopus', 10, 100, 'tentacles for ten tickles');
+insert into fish(fish_id, price, stock_qty, description) VALUES ('whale', 1999, 30, 'Not quite sure how ya gonna eat this');
+insert into fish(fish_id, price, stock_qty, description) VALUES ('puffer', 10, 100, 'tentacles for ten tickles');
+insert into fish(fish_id, price, stock_qty, description) VALUES ('ariel', 1999999, 1, 'Not for your questionable antics');
 
 USE PROMOTION;
 insert into promotion(promotion_code, discount) VALUES ('fishrfriends', 10);
