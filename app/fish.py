@@ -86,7 +86,7 @@ def deduct_fish_stock():
     data = request.get_json()
 
     for fish_item in data:
- 
+
         try:
             fish = Fish.query.filter_by(fish_id=fish_item['fish_id']).first()        
         except Exception as e:
@@ -139,7 +139,7 @@ def add_fish_stock():
             {
                 "code": 500,
                 "fish_id" : fish_item['fish_id'],
-                "message": "quantity to deduct not specified."
+                "message": "quantity to add not specified."
             }
             ), 500
 
