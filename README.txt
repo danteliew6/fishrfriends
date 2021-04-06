@@ -8,6 +8,7 @@ System Requirements:
 
 Steps to set up:
 1. Docker-Compose
+Start up Docker Desktop
 - Access docker-compose.yml file under /app and edit each microservice image to your docker username.
 (e.g image: <docker-username>/payment:1.0)
 - In the terminal, change directory to the /app directory, then enter these commands:
